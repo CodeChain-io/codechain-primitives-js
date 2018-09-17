@@ -12,7 +12,6 @@ export {
     blake256,
     blake256WithKey,
     ripemd160,
-    toHex
 } from "./hash";
 
 export {
@@ -23,3 +22,7 @@ export {
     generatePrivateKey,
     getPublicFromPrivate
 } from "./key";
+
+export {
+    toHex
+} from "./utility";

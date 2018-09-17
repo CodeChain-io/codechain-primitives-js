@@ -3,7 +3,8 @@ import * as _ from "lodash";
 
 import { H160 } from "../value/H160";
 import { H512 } from "../value/H512";
-import { toHex, ripemd160, blake256 } from "../hash";
+import { ripemd160, blake256 } from "../hash";
+import { toHex } from "../utility";
 
 import { decode, encode, fromWords, toWords } from "./bech32";
 

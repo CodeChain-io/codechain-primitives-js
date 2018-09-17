@@ -1,7 +1,7 @@
 import { Buffer } from "buffer";
 
 import { H256 } from "../value/H256";
-import { toHex } from "../hash";
+import { toHex } from "../utility";
 
 import { decode, encode, fromWords, toWords } from "./bech32";
 

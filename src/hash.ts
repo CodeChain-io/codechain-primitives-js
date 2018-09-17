@@ -1,3 +1,5 @@
+import { toHex } from "./utility";
+
 /**
  * @hidden
  */
@@ -6,20 +8,6 @@ const blake = require("blakejs");
  * @hidden
  */
 const ripemd = require("ripemd160");
-
-const toHexByte = (byte: number) =>
-    byte < 0x10 ? `0${byte.toString(16)}` : byte.toString(16);
-
-/**
- * Converts buffer to hexadecimal string.
- * @param buffer arbritrary length of data
- * @returns hexadecimal string
- */
-export const toHex = (buffer: Buffer): string => {
-    return Array.from(buffer)
-        .map(toHexByte)
-        .join("");
-};
 
 /**
  * Gets data's 256 bit blake hash.
