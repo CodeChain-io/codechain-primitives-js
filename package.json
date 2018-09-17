@@ -2,6 +2,9 @@
   "name": "codechain-primitives",
   "version": "0.1.0",
   "description": "JavaScript classes for CodeChain primitives",
+  "engines": {
+    "node": ">=8"
+  },
   "main": "./lib/index.js",
   "typings": "./lib/index.d.js",
   "files": [
