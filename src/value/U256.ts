@@ -69,7 +69,7 @@ export class U256 {
     constructor(value: number | string | BigNumber) {
         this.value = new BigNumber(value);
         if (!this.value.isInteger() || this.value.isNegative()) {
-            throw Error("U256 must be a positive integer");
+            throw Error(`U256 must be a positive integer but found ${value}`);
         } else if (this.value.toString(16).length > 64) {
             throw Error("Given value is out of range for U256");
         }
