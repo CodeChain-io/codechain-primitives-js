@@ -24,5 +24,7 @@ export {
 } from "./key";
 
 export {
-    toHex
+    toHex,
+    getAccountIdFromPrivate,
+    getAccountIdFromPublic,
 } from "./utility";
