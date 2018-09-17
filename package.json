@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "description": "JavaScript classes for CodeChain primitives",
   "main": "./lib/index.js",
+  "typings": "./lib/index.d.js",
+  "files": [
+    "lib"
+  ],
   "scripts": {
     "build": "tsc -p .",
     "test": "jest --env node"
