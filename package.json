@@ -19,5 +19,19 @@
   "bugs": {
     "url": "https://github.com/CodeChain-io/codechain-primitives-js/issues"
   },
-  "homepage": "https://github.com/CodeChain-io/codechain-primitives-js#readme"
+  "homepage": "https://github.com/CodeChain-io/codechain-primitives-js#readme",
+  "devDependencies": {
+    "@types/lodash": "^4.14.116",
+    "@types/node": "^10.10.0",
+    "typescript": "^3.0.3"
+  },
+  "dependencies": {
+    "bignumber.js": "^7.2.1",
+    "blakejs": "^1.1.0",
+    "buffer": "^5.2.1",
+    "elliptic": "^6.4.1",
+    "lodash": "^4.17.11",
+    "ripemd160": "^2.0.2",
+    "rlp": "^2.1.0"
+  }
 }
