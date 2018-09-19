@@ -1,7 +1,7 @@
 codechain-primitives-js [![Build Status](https://travis-ci.org/CodeChain-io/codechain-primitives-js.svg?branch=master)](https://travis-ci.org/CodeChain-io/codechain-primitives-js)
 ==============
 
-JavaScript functions and classes for CodeChain primitive types 
+JavaScript functions and classes for CodeChain primitives
 
 ## Install `codechain-primitives` package
 ```sh
