@@ -3,7 +3,7 @@ codechain-primitives-js [![Build Status](https://travis-ci.org/CodeChain-io/code
 
 JavaScript functions and classes for CodeChain primitives
 
-## Install `codechain-primitives` package
+## Installing a package
 ```sh
 # npm
 npm install codechain-primitives
