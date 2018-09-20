@@ -1,6 +1,9 @@
 import { getPublicFromPrivate } from "./key";
 import { blake256, ripemd160 } from "./hash";
 
+/**
+ * @hidden
+ */
 const toHexByte = (byte: number) =>
     byte < 0x10 ? `0${byte.toString(16)}` : byte.toString(16);
 

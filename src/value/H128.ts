@@ -1,6 +1,8 @@
-import * as _ from "lodash";
-
+/**
+ * @hidden
+ */
 const RLP = require("rlp");
+
 /**
  * Handles 128-bit data.
  */

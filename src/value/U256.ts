@@ -1,6 +1,10 @@
 import { BigNumber } from "bignumber.js";
 
+/**
+ * @hidden
+ */
 const RLP = require("rlp");
+
 /**
  * Handles 256-bit unsigned integers. Used to express nonce, asset amount, etc.
  */

@@ -59,6 +59,9 @@ function prefixChk(prefix: any) {
 }
 
 // FIXME: any
+/**
+ * @hidden
+ */
 export function encode(prefix: any, words: any, LIMIT?: any) {
     LIMIT = LIMIT || 90;
     if (prefix.length + 7 + words.length > LIMIT) {
@@ -94,6 +97,9 @@ export function encode(prefix: any, words: any, LIMIT?: any) {
 }
 
 // FIXME: any
+/**
+ * @hidden
+ */
 export function decode(str: string, prefix: string, LIMIT?: number) {
     LIMIT = LIMIT || 90;
     if (str.length < 8) {
@@ -181,11 +187,17 @@ function convert(data: any, inBits: any, outBits: any, pad: any) {
 }
 
 // FIXME: any
+/**
+ * @hidden
+ */
 export function toWords(bytes: any) {
     return convert(bytes, 8, 5, true);
 }
 
 // FIXME: any
+/**
+ * @hidden
+ */
 export function fromWords(words: any) {
     return convert(words, 5, 8, false);
 }

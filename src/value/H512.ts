@@ -1,6 +1,8 @@
-import * as _ from "lodash";
-
+/**
+ * @hidden
+ */
 const RLP = require("rlp");
+
 /**
  * Handles 512-bit data. Used to express public keys.
  */

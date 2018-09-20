@@ -1,6 +1,8 @@
-import * as _ from "lodash";
-
+/**
+ * @hidden
+ */
 const RLP = require("rlp");
+
 /**
  * Handles 160-bit data. Used to express account addresses.
  */
