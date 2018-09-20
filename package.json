@@ -12,7 +12,9 @@
   ],
   "scripts": {
     "build": "tsc -p .",
-    "test": "jest --env node"
+    "test": "jest --env node",
+    "docs": "yarn typedoc --out gh-pages/$npm_package_version --name \"codechain-primitives-js $npm_package_version\" --theme minimal --mode file",
+    "docs:prepare": "[ -d 'gh-pages' ] || git clone -b gh-pages git@github.com:CodeChain-io/codechain-primitives-js.git gh-pages && cd gh-pages && git pull"
   },
   "repository": {
     "type": "git",
@@ -33,6 +35,7 @@
     "@types/node": "^10.10.0",
     "jest": "^23.6.0",
     "ts-jest": "^23.1.4",
+    "typedoc": "^0.12.0",
     "typescript": "^3.0.3"
   },
   "dependencies": {
