@@ -3,7 +3,7 @@ import * as _ from "lodash";
 
 import { H160 } from "../value/H160";
 import { H512 } from "../value/H512";
-import { ripemd160, blake256 } from "../hash";
+import { blake160 } from "../hash";
 import { toHex } from "../utility";
 
 import { decode, encode, fromWords, toWords } from "./bech32";
@@ -36,14 +36,14 @@ export class PlatformAddress {
         accountId: H160 | string,
         options: { networkId?: string; version?: number } = {}
     ) {
-        const { networkId = "tc", version = 0 } = options;
+        const { networkId = "tc", version = 1 } = options;
 
         if (!H160.check(accountId)) {
             throw Error(
                 `Invalid accountId for creating PlatformAddress: "${accountId}"`
             );
         }
-        if (version !== 0) {
+        if (version !== 1) {
             throw Error(
                 `Unsupported version for PlatformAddress: "${version}"`
             );
@@ -80,7 +80,7 @@ export class PlatformAddress {
         const bytes = fromWords(words);
         const version = bytes[0];
 
-        if (version !== 0) {
+        if (version !== 1) {
             throw Error(`Unsupported version for PlatformAddress: ${version}`);
         }
 
@@ -148,5 +148,5 @@ function getAccountIdFromPublic(publicKey: string): string {
         throw Error(`Unexpected parameter for getAccountIdFromPublic: ${publicKey}`);
     }
     // FIXME: Check 512-bit hexstring
-    return ripemd160(blake256(publicKey));
+    return blake160(publicKey);
 }
