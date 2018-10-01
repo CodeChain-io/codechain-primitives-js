@@ -1,5 +1,5 @@
 import { getPublicFromPrivate } from "./key";
-import { blake256, ripemd160 } from "./hash";
+import { blake160 } from "./hash";
 
 /**
  * @hidden
@@ -34,5 +34,5 @@ export const getAccountIdFromPrivate = (priv: string): string => {
  * @returns 20 byte hexadecimal string of account id
  */
 export const getAccountIdFromPublic = (publicKey: string): string => {
-    return ripemd160(blake256(publicKey));
+    return blake160(publicKey);
 };
