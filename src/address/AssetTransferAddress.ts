@@ -1,6 +1,6 @@
 import { Buffer } from "buffer";
 
-import { H256 } from "../value/H256";
+import { H160 } from "../value/H160";
 import { toHex } from "../utility";
 
 import { decode, encode, fromWords, toWords } from "./bech32";
@@ -16,12 +16,12 @@ import { decode, encode, fromWords, toWords } from "./bech32";
 export class AssetTransferAddress {
     public static fromTypeAndPayload(
         type: number,
-        payload: H256 | string,
+        payload: H160 | string,
         options: { networkId?: string; version?: number } = {}
     ) {
-        const { networkId = "tc", version = 0 } = options;
+        const { networkId = "tc", version = 1 } = options;
 
-        if (version !== 0) {
+        if (version !== 1) {
             throw Error(
                 `Unsupported version for asset transfer address: ${version}`
             );
@@ -35,7 +35,7 @@ export class AssetTransferAddress {
             Buffer.from([
                 version,
                 type,
-                ...Buffer.from(H256.ensure(payload).value, "hex")
+                ...Buffer.from(H160.ensure(payload).value, "hex")
             ])
         );
         const address = encode(networkId + "a", words);
@@ -53,7 +53,7 @@ export class AssetTransferAddress {
         const bytes = fromWords(words);
         const version = bytes[0];
 
-        if (version !== 0) {
+        if (version !== 1) {
             throw Error(
                 `Unsupported version for asset transfer address: ${version}`
             );
@@ -66,7 +66,7 @@ export class AssetTransferAddress {
         }
 
         const payload = toHex(Buffer.from(bytes.slice(2)));
-        return new this(type, new H256(payload), address);
+        return new this(type, new H160(payload), address);
     }
 
     public static check(address: AssetTransferAddress | string) {
@@ -83,16 +83,16 @@ export class AssetTransferAddress {
 
     private static checkString(value: string): boolean {
         // FIXME: verify checksum
-        return /^.{2}a[qpzry9x8gf2tvdw0s3jn54khce6mua7l]{61}$/.test(value);
+        return /^.{2}a[qpzry9x8gf2tvdw0s3jn54khce6mua7l]{42}$/.test(value);
     }
 
     public type: number;
-    public payload: H256;
+    public payload: H160;
     public value: string;
 
-    private constructor(type: number, payload: H256 | string, address: string) {
+    private constructor(type: number, payload: H160 | string, address: string) {
         this.type = type;
-        this.payload = H256.ensure(payload);
+        this.payload = H160.ensure(payload);
         this.value = address;
     }
 
