@@ -1,5 +1,3 @@
-import * as _ from "lodash";
-
 /**
  * @hidden
  */
@@ -16,7 +14,7 @@ export interface EcdsaSignature {
 }
 
 /**
- * Gets signature for message from private key.
+ * Gets ECDSA signature for message from private key.
  * @param message arbitrary length string
  * @param priv 32 byte hexadecimal string of private key
  * @returns r, s, v of ECDSA signature
@@ -48,7 +46,7 @@ export const verifyEcdsa = (
 };
 
 /**
- * Gets public key from the message and signature.
+ * Gets public key from the message and ECDSA signature.
  * @param message arbitrary length string
  * @param signature r, s, v of ECDSA signature
  * @returns 64 byte hexadecimal string public key
@@ -66,28 +64,6 @@ export const recoverEcdsa = (
             signature,
             signature.v
         )
-        .encode("hex")
-        .slice(2);
-};
-
-/**
- * Generates a private key.
- * @returns 32 byte hexadecimal string of private key
- */
-export const generatePrivateKey = (): string => {
-    return _.padStart(secp256k1.genKeyPair().priv.toString("hex"), 64, "0");
-};
-
-/**
- * Gets public key from private key.
- * @param priv 32 byte hexadecimal string of private key
- * @returns 64 byte hexadecimal string of public key
- */
-export const getPublicFromPrivate = (priv: string): string => {
-    const key = secp256k1.keyFromPrivate(priv);
-    // Remove prefix "04" which represents it's uncompressed form.
-    return key
-        .getPublic()
         .encode("hex")
         .slice(2);
 };
