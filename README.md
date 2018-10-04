@@ -1,4 +1,4 @@
-codechain-primitives-js [![Build Status](https://travis-ci.org/CodeChain-io/codechain-primitives-js.svg?branch=master)](https://travis-ci.org/CodeChain-io/codechain-primitives-js)
+codechain-primitives-js [![Build Status](https://travis-ci.org/CodeChain-io/codechain-primitives-js.svg?branch=master)](https://travis-ci.org/CodeChain-io/codechain-primitives-js) [![codecov](https://codecov.io/gh/CodeChain-io/codechain-primitives-js/branch/master/graph/badge.svg)](https://codecov.io/gh/Codechain-io/codechain-primitives-js)
 ==============
 
 JavaScript functions and classes for CodeChain primitives

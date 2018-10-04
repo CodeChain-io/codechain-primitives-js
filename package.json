@@ -16,6 +16,7 @@
     "build": "tsc -p .",
     "test": "jest --env node",
     "posttest": "yarn lint",
+    "codecov": "node_modules/.bin/remap-istanbul -i coverage/coverage-final.json -o coverage/coverage-remapped.json && codecov -f coverage/coverage-remapped.json",
     "docs": "yarn typedoc --out gh-pages/$npm_package_version --name \"codechain-primitives-js $npm_package_version\" --theme minimal --mode file",
     "docs:prepare": "[ -d 'gh-pages' ] || git clone -b gh-pages git@github.com:CodeChain-io/codechain-primitives-js.git gh-pages && cd gh-pages && git pull"
   },
@@ -38,6 +39,7 @@
     "@types/node": "^10.10.0",
     "jest": "^23.6.0",
     "prettier": "1.14.2",
+    "remap-istanbul": "^0.12.0",
     "ts-jest": "^23.1.4",
     "tslint": "^5.11.0",
     "tslint-config-prettier": "^1.15.0",

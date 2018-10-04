@@ -1,4 +1,6 @@
 module.exports = {
+    "coverageDirectory": "./coverage/",
+    "collectCoverage": true,
     "roots": [
         "<rootDir>/test"
     ],
