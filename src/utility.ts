@@ -1,5 +1,5 @@
 import { blake160 } from "./hash";
-import { getPublicFromPrivate } from "./key";
+import { getPublicFromPrivate } from "./key/key";
 
 /**
  * @hidden

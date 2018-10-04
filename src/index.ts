@@ -18,14 +18,21 @@ export {
     ripemd160
 } from "./hash";
 
+export { generatePrivateKey, getPublicFromPrivate } from "./key/key";
+
 export {
     EcdsaSignature,
     signEcdsa,
     verifyEcdsa,
-    recoverEcdsa,
-    generatePrivateKey,
-    getPublicFromPrivate
-} from "./key";
+    recoverEcdsa
+} from "./key/ecdsa";
+
+export {
+    SchnorrSignature,
+    signSchnorr,
+    verifySchnorr,
+    recoverSchnorr
+} from "./key/schnorr";
 
 export {
     toHex,

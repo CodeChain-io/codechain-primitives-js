@@ -33,9 +33,11 @@
   },
   "homepage": "https://github.com/CodeChain-io/codechain-primitives-js#readme",
   "devDependencies": {
+    "@types/bn.js": "^4.11.2",
     "@types/jest": "^23.3.2",
     "@types/lodash": "^4.14.116",
     "@types/node": "^10.10.0",
+    "@types/node-forge": "^0.7.5",
     "jest": "^23.6.0",
     "prettier": "1.14.2",
     "ts-jest": "^23.1.4",
@@ -47,10 +49,12 @@
   "dependencies": {
     "bignumber.js": "^7.2.1",
     "blakejs": "^1.1.0",
+    "bn.js": "^4.11.8",
     "buffer": "^5.2.1",
     "elliptic": "^6.4.1",
     "lodash": "^4.17.11",
     "ripemd160": "^2.0.2",
-    "rlp": "^2.1.0"
+    "rlp": "^2.1.0",
+    "node-forge": "^0.7.6"
   }
 }
