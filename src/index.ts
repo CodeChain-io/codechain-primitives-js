@@ -10,6 +10,7 @@ export { U256 } from "./value/U256";
 
 export {
     blake128,
+    blake128WithKey,
     blake160,
     blake160WithKey,
     blake256,
