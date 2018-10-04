@@ -15,7 +15,7 @@ export {
     blake160WithKey,
     blake256,
     blake256WithKey,
-    ripemd160,
+    ripemd160
 } from "./hash";
 
 export {
@@ -30,5 +30,5 @@ export {
 export {
     toHex,
     getAccountIdFromPrivate,
-    getAccountIdFromPublic,
+    getAccountIdFromPublic
 } from "./utility";

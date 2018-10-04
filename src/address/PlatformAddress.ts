@@ -1,10 +1,10 @@
 import { Buffer } from "buffer";
 import * as _ from "lodash";
 
-import { H160 } from "../value/H160";
-import { H512 } from "../value/H512";
 import { blake160 } from "../hash";
 import { toHex } from "../utility";
+import { H160 } from "../value/H160";
+import { H512 } from "../value/H512";
 
 import { decode, encode, fromWords, toWords } from "./bech32";
 
@@ -144,8 +144,10 @@ export class PlatformAddress {
 }
 
 function getAccountIdFromPublic(publicKey: string): string {
-    if (typeof publicKey !== "string"){
-        throw Error(`Unexpected parameter for getAccountIdFromPublic: ${publicKey}`);
+    if (typeof publicKey !== "string") {
+        throw Error(
+            `Unexpected parameter for getAccountIdFromPublic: ${publicKey}`
+        );
     }
     // FIXME: Check 512-bit hexstring
     return blake160(publicKey);

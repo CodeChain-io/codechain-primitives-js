@@ -1,7 +1,7 @@
 import { Buffer } from "buffer";
 
-import { H160 } from "../value/H160";
 import { toHex } from "../utility";
+import { H160 } from "../value/H160";
 
 import { decode, encode, fromWords, toWords } from "./bech32";
 
