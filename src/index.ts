@@ -9,6 +9,7 @@ export { H512 } from "./value/H512";
 export { U256 } from "./value/U256";
 
 export {
+    blake128,
     blake160,
     blake160WithKey,
     blake256,

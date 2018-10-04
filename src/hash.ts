@@ -74,6 +74,20 @@ export const blake160WithKey = (
 };
 
 /**
+ * Gets data's 128 bit blake hash.
+ * @param data buffer or hexadecimal string
+ * @returns 16 byte hexadecimal string
+ */
+export const blake128 = (data: Buffer | string): string => {
+    if (!(data instanceof Buffer)) {
+        data = Buffer.from(data, "hex");
+    }
+    const context = blake.blake2bInit(16, null);
+    blake.blake2bUpdate(context, data);
+    return toHex(blake.blake2bFinal(context));
+};
+
+/**
  * Gets data's 160 bit RIPEMD hash.
  * @param data buffer or hexadecimal string
  * @returns 20 byte hexadecimal string
