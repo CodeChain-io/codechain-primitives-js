@@ -22,7 +22,8 @@ test("getPublicFromPrivate", () => {
 });
 
 test("sign & verify ECDSA", () => {
-    const msg = "CodeChain";
+    const msg =
+        "0000000000000000000000000000000000000000000000000000000000000000";
     const priv = generatePrivateKey();
     const pub = getPublicFromPrivate(priv);
     const sig = signEcdsa(msg, priv);
@@ -30,7 +31,8 @@ test("sign & verify ECDSA", () => {
 });
 
 test("sign & recover ECDSA", () => {
-    const msg = "CodeChain";
+    const msg =
+        "0000000000000000000000000000000000000000000000000000000000000000";
     const priv = generatePrivateKey();
     const pub = getPublicFromPrivate(priv);
     const sig = signEcdsa(msg, priv);
@@ -64,8 +66,7 @@ describe.each([
         "353d8f4a3d139a57bdf9b1c3a836f3a380fe8ba558356cd344766c97990b923b",
         "74cb307814a2f43ed0974dc278d6fc42f04c9d682e2df6a4a449bf628c4a3a03bbf6558b4c4a8e4148322cff3b2ce11eb96b0a9c76395054550ba307eed98573"
     ]
-])("verify & recover Schnorr with example: %p", (msgStr, priv, sigStr) => {
-    const msg = new Buffer(msgStr, "hex").toString("binary");
+])("verify & recover Schnorr with example: %p", (msg, priv, sigStr) => {
     const sig: SchnorrSignature = {
         r: sigStr.substr(0, 64),
         s: sigStr.substr(64, 64)
@@ -81,7 +82,8 @@ describe.each([
 });
 
 test("sign & verify Schnorr", () => {
-    const msg = "CodeChain";
+    const msg =
+        "0000000000000000000000000000000000000000000000000000000000000000";
     const priv = generatePrivateKey();
     const pub = getPublicFromPrivate(priv);
     const sig = signSchnorr(msg, priv);
@@ -89,7 +91,8 @@ test("sign & verify Schnorr", () => {
 });
 
 test("sign & recover Schnorr", () => {
-    const msg = "CodeChain";
+    const msg =
+        "0000000000000000000000000000000000000000000000000000000000000000";
     const priv = generatePrivateKey();
     const pub = getPublicFromPrivate(priv);
     const sig = signSchnorr(msg, priv);
