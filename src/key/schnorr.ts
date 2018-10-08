@@ -9,6 +9,10 @@ const EC = require("elliptic").ec;
  * @hidden
  */
 const secp256k1 = new EC("secp256k1");
+/**
+ * @hidden
+ */
+const HmacDRBG = require("hmac-drbg");
 
 export interface SchnorrSignature {
     r: string;
@@ -43,12 +47,29 @@ export const signSchnorr = (
         throw new Error(`invalid private key: ${priv}`);
     }
     const msg = new BN(message, 16);
-    const privN = new BN(priv, 16);
+    const key = secp256k1.keyFromPrivate(priv);
+    const nonce = msg.gte(secp256k1.n) ? msg.sub(secp256k1.n) : msg;
+    const drbg = new HmacDRBG({
+        hash: secp256k1.hash,
+        entropy: key.getPrivate().toArray("be", 32),
+        nonce: nonce.toArray("be", 32)
+    });
+
     while (true) {
-        const nonceKey = secp256k1.genKeyPair();
-        const R = nonceKey.getPublic();
+        let k = new BN(drbg.generate(32));
+        if (k.gte(secp256k1.n)) {
+            k = k.sub(secp256k1.n);
+        }
+        if (k.cmpn(1) <= 0) {
+            continue;
+        }
+
+        const R = secp256k1.g.mul(k);
+        if (R.isInfinity()) {
+            continue;
+        }
+
         const r = R.x;
-        let k = nonceKey.priv;
         if (R.y.isOdd()) {
             k = k.neg().umod(secp256k1.n);
         }
@@ -59,7 +80,14 @@ export const signSchnorr = (
             continue;
         }
 
-        const s = k.sub(privN.mul(h).umod(secp256k1.n)).umod(secp256k1.n);
+        const s = k
+            .sub(
+                key
+                    .getPrivate()
+                    .mul(h)
+                    .umod(secp256k1.n)
+            )
+            .umod(secp256k1.n);
         return {
             r: r.toString("hex"),
             s: s.toString("hex")
