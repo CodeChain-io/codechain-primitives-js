@@ -18,16 +18,17 @@ export interface SchnorrSignature {
 /**
  * @hidden
  */
-function schnorrHash(r: any, message: string): string {
-    const rString = r.toBuffer("ge", 32).toString("binary");
+function schnorrHash(r: BN, msg: BN): string {
+    const rString = r.toBuffer("be", 32).toString("binary");
+    const mString = msg.toBuffer("be", 32).toString("binary");
     const sha256 = md.sha256.create();
-    sha256.update(rString).update(message);
+    sha256.update(rString).update(mString);
     return sha256.digest().toHex();
 }
 
 /**
  * Gets Schnorr signature for message from private key.
- * @param message arbitrary length string
+ * @param message 32 byte hexademical string
  * @param priv 32 byte hexadecimal string of private key
  * @returns r, s of Schnorr signature
  */
@@ -35,6 +36,8 @@ export const signSchnorr = (
     message: string,
     priv: string
 ): SchnorrSignature => {
+    const msg = new BN(message, 16);
+    const privN = new BN(priv, 16);
     while (true) {
         const nonceKey = secp256k1.genKeyPair();
         const R = nonceKey.getPublic();
@@ -44,13 +47,12 @@ export const signSchnorr = (
             k = k.neg().umod(secp256k1.n);
         }
 
-        const hashString = schnorrHash(r, message);
+        const hashString = schnorrHash(r, msg);
         const h = new BN(hashString, 16);
         if (h.isZero() || h.gte(secp256k1.n)) {
             continue;
         }
 
-        const privN = new BN(priv, 16);
         const s = k.sub(privN.mul(h).umod(secp256k1.n)).umod(secp256k1.n);
         return {
             r: r.toString("hex"),
@@ -61,7 +63,7 @@ export const signSchnorr = (
 
 /**
  * Checks if the signature from signSchnorr is correct.
- * @param message arbitrary length string
+ * @param message 32 byte hexademical string
  * @param signature r, s of Schnorr signature
  * @param pub 64 byte hexadecimal string of public key
  * @returns if signature is valid, true. Else false.
@@ -82,7 +84,8 @@ export const verifySchnorr = (
         return false;
     }
 
-    const hashString = schnorrHash(r, message);
+    const msg = new BN(message, 16);
+    const hashString = schnorrHash(r, msg);
     const h = new BN(hashString, 16);
     if (h.isZero() || h.gte(secp256k1.n)) {
         return false;
@@ -98,7 +101,7 @@ export const verifySchnorr = (
 
 /**
  * Gets public key from the message and Schnorr signature.
- * @param message arbitrary length string
+ * @param message 32 byte hexademical string
  * @param signature r, s of Schnorr signature
  * @returns 64 byte hexadecimal string public key
  */
@@ -112,7 +115,8 @@ export const recoverSchnorr = (
         throw new Error("invalid s value");
     }
 
-    const hashString = schnorrHash(r, message);
+    const msg = new BN(message, 16);
+    const hashString = schnorrHash(r, msg);
     const h = new BN(hashString, 16);
     if (h.isZero() || h.gte(secp256k1.n)) {
         throw new Error("invalid hash value");
