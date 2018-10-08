@@ -20,6 +20,12 @@ export interface EcdsaSignature {
  * @returns r, s, v of ECDSA signature
  */
 export const signEcdsa = (message: string, priv: string): EcdsaSignature => {
+    if (!/^[0-9a-fA-F]{64}$/.test(message)) {
+        throw new Error(`invalid message: ${message}`);
+    }
+    if (!/^[0-9a-fA-F]{64}$/.test(priv)) {
+        throw new Error(`invalid private key: ${priv}`);
+    }
     const key = secp256k1.keyFromPrivate(priv);
     const { r, s, recoveryParam: v } = key.sign(message, { canonical: true });
     return {
@@ -41,6 +47,20 @@ export const verifyEcdsa = (
     signature: EcdsaSignature,
     pub: string
 ): boolean => {
+    if (!/^[0-9a-fA-F]{64}$/.test(message)) {
+        throw new Error(`invalid message: ${message}`);
+    }
+    if (
+        !/^[0-9a-fA-F]{1,64}$/.test(signature.r) ||
+        !/^[0-9a-fA-F]{1,64}$/.test(signature.s) ||
+        signature.v < 0 ||
+        signature.v > 3
+    ) {
+        throw new Error(`invalid signature: ${signature}`);
+    }
+    if (!/^[0-9a-fA-F]{128}$/.test(pub)) {
+        throw new Error(`invalid public key: ${pub}`);
+    }
     const key = secp256k1.keyFromPublic("04" + pub, "hex");
     return key.verify(message, signature);
 };
@@ -55,6 +75,17 @@ export const recoverEcdsa = (
     message: string,
     signature: EcdsaSignature
 ): string => {
+    if (!/^[0-9a-fA-F]{64}$/.test(message)) {
+        throw new Error(`invalid message: ${message}`);
+    }
+    if (
+        !/^[0-9a-fA-F]{1,64}$/.test(signature.r) ||
+        !/^[0-9a-fA-F]{1,64}$/.test(signature.s) ||
+        signature.v < 0 ||
+        signature.v > 3
+    ) {
+        throw new Error(`invalid signature: ${signature}`);
+    }
     return secp256k1
         .recoverPubKey(
             secp256k1
