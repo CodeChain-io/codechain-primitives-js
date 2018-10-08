@@ -36,6 +36,12 @@ export const signSchnorr = (
     message: string,
     priv: string
 ): SchnorrSignature => {
+    if (!/^[0-9a-fA-F]{64}$/.test(message)) {
+        throw new Error(`invalid message: ${message}`);
+    }
+    if (!/^[0-9a-fA-F]{64}$/.test(priv)) {
+        throw new Error(`invalid private key: ${priv}`);
+    }
     const msg = new BN(message, 16);
     const privN = new BN(priv, 16);
     while (true) {
@@ -73,6 +79,18 @@ export const verifySchnorr = (
     signature: SchnorrSignature,
     pub: string
 ): boolean => {
+    if (!/^[0-9a-fA-F]{64}$/.test(message)) {
+        throw new Error(`invalid message: ${message}`);
+    }
+    if (
+        !/^[0-9a-fA-F]{1,64}$/.test(signature.r) ||
+        !/^[0-9a-fA-F]{1,64}$/.test(signature.s)
+    ) {
+        throw new Error(`invalid signature: ${signature}`);
+    }
+    if (!/^[0-9a-fA-F]{128}$/.test(pub)) {
+        throw new Error(`invalid public key: ${pub}`);
+    }
     const key = secp256k1.keyFromPublic("04" + pub, "hex");
     if (!key.validate().result) {
         return false;
@@ -109,6 +127,15 @@ export const recoverSchnorr = (
     message: string,
     signature: SchnorrSignature
 ): string => {
+    if (!/^[0-9a-fA-F]{64}$/.test(message)) {
+        throw new Error(`invalid message: ${message}`);
+    }
+    if (
+        !/^[0-9a-fA-F]{1,64}$/.test(signature.r) ||
+        !/^[0-9a-fA-F]{1,64}$/.test(signature.s)
+    ) {
+        throw new Error(`invalid signature: ${signature}`);
+    }
     const r = new BN(signature.r, 16);
     const s = new BN(signature.s, 16);
     if (s.gte(secp256k1.n)) {
