@@ -49,10 +49,13 @@ export const signSchnorr = (
     const msg = new BN(message, 16);
     const key = secp256k1.keyFromPrivate(priv);
     const nonce = msg.gte(secp256k1.n) ? msg.sub(secp256k1.n) : msg;
+    const algo = "Schnorr+SHA256  ";
+    const pers = Array.from(algo).map(v => v.charCodeAt(0));
     const drbg = new HmacDRBG({
         hash: secp256k1.hash,
         entropy: key.getPrivate().toArray("be", 32),
-        nonce: nonce.toArray("be", 32)
+        nonce: nonce.toArray("be", 32),
+        pers
     });
 
     while (true) {
