@@ -69,7 +69,7 @@ export class AssetTransferAddress {
         return new this(type, new H160(payload), address);
     }
 
-    public static check(address: AssetTransferAddress | string) {
+    public static check(address: any) {
         return address instanceof AssetTransferAddress
             ? true
             : AssetTransferAddress.checkString(address);

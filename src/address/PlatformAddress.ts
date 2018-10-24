@@ -88,7 +88,7 @@ export class PlatformAddress {
         return new PlatformAddress(new H160(accountId), address);
     }
 
-    public static check(address: PlatformAddress | string): boolean {
+    public static check(address: any): boolean {
         return address instanceof PlatformAddress
             ? true
             : PlatformAddress.checkString(address);

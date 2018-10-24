@@ -25,7 +25,7 @@ export class H256 {
         );
     }
 
-    public static check(param: H256 | string): boolean {
+    public static check(param: any): boolean {
         return param instanceof H256 ? true : H256.checkString(param);
     }
 

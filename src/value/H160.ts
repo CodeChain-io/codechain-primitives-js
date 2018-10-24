@@ -25,7 +25,7 @@ export class H160 {
         );
     }
 
-    public static check(param: H160 | string): boolean {
+    public static check(param: any): boolean {
         return param instanceof H160 ? true : H160.checkString(param);
     }
 

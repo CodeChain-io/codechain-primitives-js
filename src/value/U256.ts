@@ -36,7 +36,7 @@ export class U256 {
         );
     }
 
-    public static check(param: U256 | string | number | BigNumber) {
+    public static check(param: any) {
         if (param instanceof U256) {
             return true;
         } else if (param instanceof BigNumber) {
