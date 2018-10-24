@@ -1,9 +1,27 @@
 import { Buffer } from "buffer";
+import * as _ from "lodash";
 
 import { toHex } from "../utility";
 import { H160 } from "../value/H160";
 
 import { decode, encode, fromWords, toWords } from "./bech32";
+
+export type PublicKeyHashValue = H160 | string;
+export type PublicKeyHash = H160;
+
+export interface MultisigValue {
+    n: number;
+    m: number;
+    pubkeys: PublicKeyHashValue[];
+}
+export interface Multisig {
+    n: number;
+    m: number;
+    pubkeys: PublicKeyHash[];
+}
+
+export type Payload = PublicKeyHash | Multisig;
+export type PayloadValue = PublicKeyHashValue | MultisigValue;
 
 /**
  * Substitutes for asset owner data which consists of network id,
@@ -16,7 +34,7 @@ import { decode, encode, fromWords, toWords } from "./bech32";
 export class AssetTransferAddress {
     public static fromTypeAndPayload(
         type: number,
-        payload: H160 | string,
+        payload: PayloadValue,
         options: { networkId?: string; version?: number } = {}
     ) {
         const { networkId = "tc", version = 1 } = options;
@@ -27,17 +45,14 @@ export class AssetTransferAddress {
             );
         }
 
-        if (type < 0x00 || type > 0x02) {
+        if (type < 0x00 || type > 0x03) {
             throw Error(`Unsupported type for asset transfer address: ${type}`);
         }
 
         const words = toWords(
-            Buffer.from([
-                version,
-                type,
-                ...Buffer.from(H160.ensure(payload).value, "hex")
-            ])
+            Buffer.from([version, type, ...encodePayload(payload)])
         );
+
         const address = encode(networkId + "a", words);
         return new AssetTransferAddress(type, payload, address);
     }
@@ -61,12 +76,22 @@ export class AssetTransferAddress {
 
         const type = bytes[1];
 
-        if (type < 0x00 || type > 0x02) {
+        if (type < 0x00 || type > 0x03) {
             throw Error(`Unsupported type for asset transfer address: ${type}`);
         }
 
-        const payload = toHex(Buffer.from(bytes.slice(2)));
-        return new this(type, new H160(payload), address);
+        if (type < 0x03) {
+            const payload = toHex(Buffer.from(bytes.slice(2)));
+            return new this(type, new H160(payload), address);
+        } else {
+            const n = bytes[2];
+            const m = bytes[3];
+            const payload = Buffer.from(bytes.slice(4));
+            const pubkeys = _.chunk(payload, 20).map(chunk =>
+                H160.ensure(toHex(Buffer.from(chunk)))
+            );
+            return new this(type, { n, m, pubkeys }, address);
+        }
     }
 
     public static check(address: any) {
@@ -87,16 +112,42 @@ export class AssetTransferAddress {
     }
 
     public type: number;
-    public payload: H160;
+    public payload: Payload;
     public value: string;
 
-    private constructor(type: number, payload: H160 | string, address: string) {
+    private constructor(type: number, payload: PayloadValue, address: string) {
         this.type = type;
-        this.payload = H160.ensure(payload);
+        if (H160.check(payload)) {
+            this.payload = H160.ensure(payload as any);
+        } else {
+            const { m, n, pubkeys } = payload as Multisig;
+            this.payload = {
+                m,
+                n,
+                pubkeys: pubkeys.map(p => H160.ensure(p))
+            };
+        }
         this.value = address;
     }
 
     public toString(): string {
         return this.value;
+    }
+}
+
+function encodePayload(payload: PayloadValue): Buffer {
+    if (H160.check(payload)) {
+        return Buffer.from(H160.ensure(payload as H160).value, "hex");
+    } else {
+        const { m, n, pubkeys } = payload as Multisig;
+        return Buffer.from([
+            n,
+            m,
+            ...([] as number[]).concat(
+                ...pubkeys.map(key => [
+                    ...Buffer.from(H160.ensure(key).value, "hex")
+                ])
+            )
+        ]);
     }
 }

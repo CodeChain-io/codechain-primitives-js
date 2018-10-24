@@ -1,4 +1,5 @@
 import { AssetTransferAddress, PlatformAddress } from "..";
+import { Multisig } from "../lib/address/AssetTransferAddress";
 
 describe("AssetTransferAddress", () => {
     const validAddressString = "ccaqyqjmvml2hdp8s8xzqnr57r8ywtduy2u6gcq89vffl";
@@ -34,7 +35,8 @@ describe("AssetTransferAddress", () => {
         [2, "0000000000000000000000000000000000000000", "tc", 1, false],
         [0, "0000000000000000000000000000000000000000", "tc", 0, true],
         [-1, "0000000000000000000000000000000000000000", "tc", 1, true],
-        [3, "0000000000000000000000000000000000000000", "tc", 1, true]
+        [4, "0000000000000000000000000000000000000000", "tc", 1, true],
+        [255, "0000000000000000000000000000000000000000", "tc", 1, true]
     ])(
         "fromTypeAndPayload type = %p payload = %p networkId = %p version = %p",
         (type, payload, networkId, version, shouldThrow) => {
@@ -55,6 +57,38 @@ describe("AssetTransferAddress", () => {
             }
         }
     );
+
+    test("fromTypeAndPayload multisig", () => {
+        expect(
+            AssetTransferAddress.fromTypeAndPayload(3, {
+                m: 1,
+                n: 2,
+                pubkeys: [
+                    "1111111111111111111111111111111111111111",
+                    "2222222222222222222222222222222222222222"
+                ]
+            }).value
+        ).toEqual(
+            "tcaqypsyqg3zyg3zyg3zyg3zyg3zyg3zyg3zyg3zyfzyg3zyg3zyg3zyg3zyg3zyg3zyg3zygsn28hf0"
+        );
+    });
+
+    test("fromString multisig", () => {
+        const address = AssetTransferAddress.fromString(
+            "tcaqypsyqg3zyg3zyg3zyg3zyg3zyg3zyg3zyg3zyfzyg3zyg3zyg3zyg3zyg3zyg3zyg3zygsn28hf0"
+        );
+        const { payload, type } = address;
+        expect(type).toBe(3);
+        const { n, m, pubkeys } = payload as Multisig;
+        expect(n).toBe(2);
+        expect(m).toBe(1);
+        expect(pubkeys[0].value).toBe(
+            "1111111111111111111111111111111111111111"
+        );
+        expect(pubkeys[1].value).toBe(
+            "2222222222222222222222222222222222222222"
+        );
+    });
 
     test("fromString", () => {
         expect(AssetTransferAddress.fromString(validAddressString)).toEqual(
