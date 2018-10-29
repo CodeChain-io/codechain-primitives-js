@@ -19,7 +19,7 @@ import { decode, encode, fromWords, toWords } from "./bech32";
 export class PlatformAddress {
     public static fromPublic(
         publicKey: H512 | string,
-        options: { networkId?: string; version?: number } = {}
+        options: { networkId: string; version?: number }
     ): PlatformAddress {
         if (!H512.check(publicKey)) {
             throw Error(
@@ -34,9 +34,9 @@ export class PlatformAddress {
 
     public static fromAccountId(
         accountId: H160 | string,
-        options: { networkId?: string; version?: number } = {}
+        options: { networkId: string; version?: number }
     ) {
-        const { networkId = "tc", version = 1 } = options;
+        const { networkId, version = 1 } = options;
 
         if (!H160.check(accountId)) {
             throw Error(

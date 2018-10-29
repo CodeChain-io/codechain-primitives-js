@@ -60,14 +60,20 @@ describe("AssetTransferAddress", () => {
 
     test("fromTypeAndPayload multisig", () => {
         expect(
-            AssetTransferAddress.fromTypeAndPayload(3, {
-                m: 1,
-                n: 2,
-                pubkeys: [
-                    "1111111111111111111111111111111111111111",
-                    "2222222222222222222222222222222222222222"
-                ]
-            }).value
+            AssetTransferAddress.fromTypeAndPayload(
+                3,
+                {
+                    m: 1,
+                    n: 2,
+                    pubkeys: [
+                        "1111111111111111111111111111111111111111",
+                        "2222222222222222222222222222222222222222"
+                    ]
+                },
+                {
+                    networkId: "tc"
+                }
+            ).value
         ).toEqual(
             "tcaqypsyqg3zyg3zyg3zyg3zyg3zyg3zyg3zyg3zyfzyg3zyg3zyg3zyg3zyg3zyg3zyg3zygsn28hf0"
         );
