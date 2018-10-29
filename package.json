@@ -1,6 +1,6 @@
 {
   "name": "codechain-primitives",
-  "version": "0.3.5",
+  "version": "0.4.0",
   "description": "JavaScript classes for CodeChain primitives",
   "engines": {
     "node": ">=8"
