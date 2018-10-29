@@ -35,9 +35,9 @@ export class AssetTransferAddress {
     public static fromTypeAndPayload(
         type: number,
         payload: PayloadValue,
-        options: { networkId?: string; version?: number } = {}
+        options: { networkId: string; version?: number }
     ) {
-        const { networkId = "tc", version = 1 } = options;
+        const { networkId, version = 1 } = options;
 
         if (version !== 1) {
             throw Error(
