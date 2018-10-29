@@ -111,9 +111,9 @@ export class AssetTransferAddress {
         return /^.{2}a[qpzry9x8gf2tvdw0s3jn54khce6mua7l]{42}$/.test(value);
     }
 
-    public type: number;
-    public payload: Payload;
-    public value: string;
+    public readonly type: number;
+    public readonly payload: Payload;
+    public readonly value: string;
 
     private constructor(type: number, payload: PayloadValue, address: string) {
         this.type = type;
