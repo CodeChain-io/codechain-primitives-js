@@ -1,5 +1,8 @@
 import { BigNumber } from "bignumber.js";
 
+// FIXME: export
+type U256Value = U256 | BigNumber | number | string;
+
 /**
  * @hidden
  */
@@ -14,6 +17,53 @@ export class U256 {
             "0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
         )
     );
+
+    public static plus(lhs: U256Value, rhs: U256Value): U256 {
+        lhs = U256.ensure(lhs);
+        rhs = U256.ensure(rhs);
+        const result = lhs.value.plus(rhs.value);
+        if (result.isGreaterThan(U256.MAX_VALUE.value)) {
+            throw Error(`Integer overflow`);
+        }
+        return new U256(result);
+    }
+
+    public static minus(lhs: U256Value, rhs: U256Value): U256 {
+        lhs = U256.ensure(lhs);
+        rhs = U256.ensure(rhs);
+        if (lhs.isLessThan(rhs)) {
+            throw Error(`Integer underflow`);
+        }
+        return new U256(lhs.value.minus(rhs.value));
+    }
+
+    public static times(lhs: U256Value, rhs: U256Value): U256 {
+        lhs = U256.ensure(lhs);
+        rhs = U256.ensure(rhs);
+        const result = lhs.value.times(rhs.value);
+        if (result.isGreaterThan(U256.MAX_VALUE.value)) {
+            throw Error(`Integer overflow`);
+        }
+        return new U256(result);
+    }
+
+    public static idiv(lhs: U256Value, rhs: U256Value): U256 {
+        lhs = U256.ensure(lhs);
+        rhs = U256.ensure(rhs);
+        if (rhs.isEqualTo(0)) {
+            throw Error(`Divided by 0`);
+        }
+        return new U256(lhs.value.idiv(rhs.value));
+    }
+
+    public static mod(lhs: U256Value, rhs: U256Value): U256 {
+        lhs = U256.ensure(lhs);
+        rhs = U256.ensure(rhs);
+        if (rhs.isEqualTo(0)) {
+            throw Error(`Divided by 0`);
+        }
+        return new U256(lhs.value.mod(rhs.value));
+    }
 
     public static fromBytes(buffer: Buffer): U256 {
         const bytes = Array.from(buffer.values());
@@ -54,7 +104,7 @@ export class U256 {
         }
     }
 
-    public static ensure(param: U256 | string | number | BigNumber) {
+    public static ensure(param: U256Value) {
         return param instanceof U256 ? param : new U256(param);
     }
 
@@ -77,11 +127,19 @@ export class U256 {
         if (!this.value.isInteger() || this.value.isNegative()) {
             throw Error(`U256 must be a positive integer but found ${value}`);
         } else if (this.value.toString(16).length > 64) {
-            throw Error("Given value is out of range for U256");
+            throw Error(
+                `Given value is out of range for U256: ${this.value.toString(
+                    16
+                )}`
+            );
         }
     }
 
+    /**
+     * @deprecated
+     */
     public increase(): U256 {
+        console.warn("U256 increase() is deprecated. Use U256.plus() instead.");
         return new U256(this.value.plus(1));
     }
 
@@ -99,8 +157,44 @@ export class U256 {
         return RLP.encode(this.toEncodeObject());
     }
 
-    public isEqualTo(rhs: U256): boolean {
-        return this.value.isEqualTo(rhs.value);
+    public isEqualTo(rhs: U256Value): boolean {
+        return this.value.isEqualTo(U256.ensure(rhs).value);
+    }
+
+    public eq(rhs: U256Value): boolean {
+        return this.isEqualTo(rhs);
+    }
+
+    public isGreaterThan(rhs: U256Value): boolean {
+        return this.value.isGreaterThan(U256.ensure(rhs).value);
+    }
+
+    public gt(rhs: U256Value): boolean {
+        return this.isGreaterThan(rhs);
+    }
+
+    public isGreaterThanOrEqualTo(rhs: U256Value): boolean {
+        return this.value.isGreaterThanOrEqualTo(U256.ensure(rhs).value);
+    }
+
+    public gte(rhs: U256Value): boolean {
+        return this.isGreaterThanOrEqualTo(rhs);
+    }
+
+    public isLessThan(rhs: U256Value): boolean {
+        return this.value.isLessThan(U256.ensure(rhs).value);
+    }
+
+    public lt(rhs: U256Value): boolean {
+        return this.isLessThan(rhs);
+    }
+
+    public isLessThanOrEqualTo(rhs: U256Value): boolean {
+        return this.value.isLessThanOrEqualTo(U256.ensure(rhs).value);
+    }
+
+    public lte(rhs: U256Value): boolean {
+        return this.isLessThanOrEqualTo(rhs);
     }
 
     public toString(base?: 10 | 16) {
