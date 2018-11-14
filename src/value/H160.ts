@@ -57,4 +57,8 @@ export class H160 {
     public rlpBytes(): Buffer {
         return RLP.encode(this.toEncodeObject());
     }
+
+    public isEqualTo(rhs: H160): boolean {
+        return this.value === rhs.value;
+    }
 }
