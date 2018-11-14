@@ -15,6 +15,7 @@
     "fmt": "tslint -p . --fix && prettier '{src,test}/**/*.{ts,js,json}' --write",
     "build": "tsc -p .",
     "test": "jest --env node",
+    "pretest": "yarn build",
     "posttest": "yarn lint",
     "codecov": "node_modules/.bin/remap-istanbul -i coverage/coverage-final.json -o coverage/coverage-remapped.json && codecov -f coverage/coverage-remapped.json",
     "docs": "yarn typedoc --out gh-pages/$npm_package_version --name \"codechain-primitives-js $npm_package_version\" --theme minimal --mode file",
