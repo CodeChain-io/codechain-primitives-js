@@ -70,10 +70,10 @@ export class U256 {
     public static fromBytes(buffer: Buffer): U256 {
         const bytes = Array.from(buffer.values());
         const length = bytes.shift()! - 0x80;
-        if (length > 32) {
-            throw Error("Buffer for U256 must be less than or equal to 32");
-        } else if (bytes.length !== length) {
+        if (bytes.length !== length) {
             throw Error(`Invalid RLP for U256: ${bytes}`);
+        } else if (length > 32) {
+            throw Error("Buffer for U256 must be less than or equal to 32");
         } else if (length === 0) {
             return new U256(0);
         }
