@@ -58,4 +58,8 @@ export class H512 {
     public rlpBytes(): Buffer {
         return RLP.encode(this.toEncodeObject());
     }
+
+    public isEqualTo(rhs: H512): boolean {
+        return this.value === rhs.value;
+    }
 }
