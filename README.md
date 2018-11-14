@@ -40,7 +40,7 @@ import { blake256, H256 } from "codechain-primitives";
 ## Classes
 
 - H128, H160, H256, H512
-- U256
+- U64, U256
 - AssetTransferAddres
 - PlatformAddress
 
