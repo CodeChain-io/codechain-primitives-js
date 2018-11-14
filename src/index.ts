@@ -6,6 +6,7 @@ export { H160 } from "./value/H160";
 export { H256 } from "./value/H256";
 export { H512 } from "./value/H512";
 
+export { U64 } from "./value/U64";
 export { U256 } from "./value/U256";
 
 export {

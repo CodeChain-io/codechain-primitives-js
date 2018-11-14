@@ -1,4 +1,4 @@
-import { H128, H160, H256, H512, U256 } from "..";
+import { H128, H160, H256, H512, U256, U64 } from "..";
 
 describe("H128", () => {
     test("import", () => {
@@ -78,182 +78,184 @@ describe("H512", () => {
     test.skip("toEncodeObject", done => done.fail("not implemented"));
 });
 
-describe("U256", () => {
+describe.each([[U64, "U64"], [U256, "U256"]])("%p", (Uxxx, className) => {
     test("import", () => {
-        expect(typeof U256).toBe("function");
+        expect(typeof Uxxx).toBe("function");
     });
 
     test("require", () => {
         const obj = require("..");
-        expect(typeof obj.U256).toBe("function");
+        expect(typeof obj[className]).toBe("function");
     });
 
     test("check", () => {
-        expect(U256.check(undefined as any)).toBe(false);
-        expect(U256.check(null as any)).toBe(false);
-        expect(U256.check(-1)).toBe(false);
-        expect(U256.check(0.5)).toBe(false);
-        expect(U256.check(0.5)).toBe(false);
+        expect(Uxxx.check(undefined as any)).toBe(false);
+        expect(Uxxx.check(null as any)).toBe(false);
+        expect(Uxxx.check(-1)).toBe(false);
+        expect(Uxxx.check(0.5)).toBe(false);
+        expect(Uxxx.check(0.5)).toBe(false);
 
-        expect(U256.check(0)).toBe(true);
-        expect(U256.check("0")).toBe(true);
-        expect(U256.check("0x0")).toBe(true);
-        expect(U256.check(new U256(0))).toBe(true);
+        expect(Uxxx.check(0)).toBe(true);
+        expect(Uxxx.check("0")).toBe(true);
+        expect(Uxxx.check("0x0")).toBe(true);
+        expect(Uxxx.check(new Uxxx(0))).toBe(true);
     });
 
     test("ensure", () => {
         expect(() => {
-            U256.ensure(undefined as any);
+            Uxxx.ensure(undefined as any);
         }).toThrow();
-        expect(U256.ensure(10)).toEqual(new U256(10));
-        expect(U256.ensure("10")).toEqual(new U256(10));
-        expect(U256.ensure("0xA")).toEqual(new U256(10));
-        expect(U256.ensure(new U256(10))).toEqual(new U256(10));
+        expect(Uxxx.ensure(10)).toEqual(new Uxxx(10));
+        expect(Uxxx.ensure("10")).toEqual(new Uxxx(10));
+        expect(Uxxx.ensure("0xA")).toEqual(new Uxxx(10));
+        expect(Uxxx.ensure(new Uxxx(10))).toEqual(new Uxxx(10));
     });
 
     test("fromBytes", () => {
         let a;
-        a = new U256(0);
-        expect(U256.fromBytes(a.rlpBytes())).toEqual(a);
-        a = new U256(255);
-        expect(U256.fromBytes(a.rlpBytes())).toEqual(a);
-        a = new U256(1000);
-        expect(U256.fromBytes(a.rlpBytes())).toEqual(a);
-        a = new U256("1000000000000");
-        expect(U256.fromBytes(a.rlpBytes())).toEqual(a);
+        a = new Uxxx(0);
+        expect(Uxxx.fromBytes(a.rlpBytes())).toEqual(a);
+        a = new Uxxx(255);
+        expect(Uxxx.fromBytes(a.rlpBytes())).toEqual(a);
+        a = new Uxxx(1000);
+        expect(Uxxx.fromBytes(a.rlpBytes())).toEqual(a);
+        a = new Uxxx("1000000000000");
+        expect(Uxxx.fromBytes(a.rlpBytes())).toEqual(a);
     });
 
-    test("increase", () => {
-        const a = new U256(0);
-        const b = a.increase();
-        expect(a).toEqual(new U256(0));
-        expect(b).toEqual(new U256(1));
-    });
+    if (Uxxx === U256) {
+        test("increase", () => {
+            const a = new Uxxx(0);
+            const b = a.increase();
+            expect(a).toEqual(new Uxxx(0));
+            expect(b).toEqual(new Uxxx(1));
+        });
+    }
 
     test("isEqualTo", () => {
-        expect(new U256(0).isEqualTo(new U256(0))).toEqual(true);
-        expect(new U256(1000000).isEqualTo(new U256(1000000))).toEqual(true);
+        expect(new Uxxx(0).isEqualTo(new Uxxx(0))).toEqual(true);
+        expect(new Uxxx(1000000).isEqualTo(new Uxxx(1000000))).toEqual(true);
         expect(
-            new U256("100000000000000000").isEqualTo(
-                new U256("100000000000000000")
+            new Uxxx("100000000000000000").isEqualTo(
+                new Uxxx("100000000000000000")
             )
         ).toEqual(true);
     });
 
     test("rlpBytes", () => {
-        expect(new U256(0).rlpBytes()).toEqual(Buffer.from([0x80]));
-        expect(new U256(10).rlpBytes()).toEqual(Buffer.from([0x0a]));
-        expect(new U256(255).rlpBytes()).toEqual(Buffer.from([0x81, 0xff]));
-        expect(new U256(1000).rlpBytes()).toEqual(
+        expect(new Uxxx(0).rlpBytes()).toEqual(Buffer.from([0x80]));
+        expect(new Uxxx(10).rlpBytes()).toEqual(Buffer.from([0x0a]));
+        expect(new Uxxx(255).rlpBytes()).toEqual(Buffer.from([0x81, 0xff]));
+        expect(new Uxxx(1000).rlpBytes()).toEqual(
             Buffer.from([0x82, 0x03, 0xe8])
         );
-        expect(new U256(100000).rlpBytes()).toEqual(
+        expect(new Uxxx(100000).rlpBytes()).toEqual(
             Buffer.from([0x83, 0x01, 0x86, 0xa0])
         );
-        expect(new U256(10000000).rlpBytes()).toEqual(
+        expect(new Uxxx(10000000).rlpBytes()).toEqual(
             Buffer.from([0x83, 0x98, 0x96, 0x80])
         );
-        expect(new U256("1000000000").rlpBytes()).toEqual(
+        expect(new Uxxx("1000000000").rlpBytes()).toEqual(
             Buffer.from([0x84, 0x3b, 0x9a, 0xca, 0x00])
         );
-        expect(new U256("1000000000000").rlpBytes()).toEqual(
+        expect(new Uxxx("1000000000000").rlpBytes()).toEqual(
             Buffer.from([0x85, 0xe8, 0xd4, 0xa5, 0x10, 0x00])
         );
     });
 
     test("toEncodeObject", () => {
-        expect(new U256(0).toEncodeObject()).toBe(0);
-        expect(new U256(0xf).toEncodeObject()).toBe("0x0f");
-        expect(new U256(0xff).toEncodeObject()).toBe("0xff");
-        expect(new U256(0xfff).toEncodeObject()).toBe("0x0fff");
+        expect(new Uxxx(0).toEncodeObject()).toBe(0);
+        expect(new Uxxx(0xf).toEncodeObject()).toBe("0x0f");
+        expect(new Uxxx(0xff).toEncodeObject()).toBe("0xff");
+        expect(new Uxxx(0xfff).toEncodeObject()).toBe("0x0fff");
     });
 
     test("toString", () => {
-        expect(new U256(0).toString()).toBe("0");
-        expect(new U256(0xff).toString()).toBe("255");
+        expect(new Uxxx(0).toString()).toBe("0");
+        expect(new Uxxx(0xff).toString()).toBe("255");
     });
 
     test("plus", () => {
-        expect(U256.plus(10, 5)).toEqual(new U256(10 + 5));
+        expect(Uxxx.plus(10, 5)).toEqual(new Uxxx(10 + 5));
         expect(() => {
-            U256.plus(U256.MAX_VALUE, 1);
+            Uxxx.plus(Uxxx.MAX_VALUE, 1);
         }).toThrow("overflow");
         expect(() => {
-            U256.plus(-1, 0);
-        }).toThrow("U256");
+            Uxxx.plus(-1, 0);
+        }).toThrow(className);
     });
 
     test("minus", () => {
-        expect(U256.minus(10, 5)).toEqual(new U256(10 - 5));
+        expect(Uxxx.minus(10, 5)).toEqual(new Uxxx(10 - 5));
         expect(() => {
-            U256.minus(5, 10);
+            Uxxx.minus(5, 10);
         }).toThrow("underflow");
         expect(() => {
-            U256.minus(-1, -1);
-        }).toThrow("U256");
+            Uxxx.minus(-1, -1);
+        }).toThrow(className);
     });
 
     test("times", () => {
-        expect(U256.times(10, 5)).toEqual(new U256(10 * 5));
-        expect(U256.times(U256.MAX_VALUE, 0)).toEqual(new U256(0));
-        expect(U256.times(U256.MAX_VALUE, 1)).toEqual(U256.MAX_VALUE);
+        expect(Uxxx.times(10, 5)).toEqual(new Uxxx(10 * 5));
+        expect(Uxxx.times(Uxxx.MAX_VALUE, 0)).toEqual(new Uxxx(0));
+        expect(Uxxx.times(Uxxx.MAX_VALUE, 1)).toEqual(Uxxx.MAX_VALUE);
         expect(() => {
-            U256.times(U256.MAX_VALUE, 2);
+            Uxxx.times(Uxxx.MAX_VALUE, 2);
         }).toThrow("overflow");
         expect(() => {
-            U256.times(-1, -1);
-        }).toThrow("U256");
+            Uxxx.times(-1, -1);
+        }).toThrow(className);
     });
 
     test("idiv", () => {
-        expect(U256.idiv(10, 5)).toEqual(new U256(10 / 5));
-        expect(U256.idiv(14, 5)).toEqual(new U256(2));
+        expect(Uxxx.idiv(10, 5)).toEqual(new Uxxx(10 / 5));
+        expect(Uxxx.idiv(14, 5)).toEqual(new Uxxx(2));
         expect(() => {
-            U256.idiv(10, 0);
+            Uxxx.idiv(10, 0);
         }).toThrow("Divided by 0");
         expect(() => {
-            U256.idiv(-1, -1);
-        }).toThrow("U256");
+            Uxxx.idiv(-1, -1);
+        }).toThrow(className);
     });
 
     test("mod", () => {
-        expect(U256.mod(10, 5)).toEqual(new U256(0));
-        expect(U256.mod(14, 5)).toEqual(new U256(4));
+        expect(Uxxx.mod(10, 5)).toEqual(new Uxxx(0));
+        expect(Uxxx.mod(14, 5)).toEqual(new Uxxx(4));
         expect(() => {
-            U256.mod(10, 0);
+            Uxxx.mod(10, 0);
         }).toThrow("Divided by 0");
         expect(() => {
-            U256.mod(-1, -1);
-        }).toThrow("U256");
+            Uxxx.mod(-1, -1);
+        }).toThrow(className);
     });
 
     test("Comparison", () => {
-        expect(new U256(11).gt(10)).toBe(true);
-        expect(new U256(10).gt(10)).toBe(false);
-        expect(new U256(9).gt(10)).toBe(false);
-        expect(new U256(11).isGreaterThan(10)).toBe(true);
-        expect(new U256(10).isGreaterThan(10)).toBe(false);
-        expect(new U256(9).isGreaterThan(10)).toBe(false);
+        expect(new Uxxx(11).gt(10)).toBe(true);
+        expect(new Uxxx(10).gt(10)).toBe(false);
+        expect(new Uxxx(9).gt(10)).toBe(false);
+        expect(new Uxxx(11).isGreaterThan(10)).toBe(true);
+        expect(new Uxxx(10).isGreaterThan(10)).toBe(false);
+        expect(new Uxxx(9).isGreaterThan(10)).toBe(false);
 
-        expect(new U256(11).gte(10)).toBe(true);
-        expect(new U256(10).gte(10)).toBe(true);
-        expect(new U256(9).gte(10)).toBe(false);
-        expect(new U256(11).isGreaterThanOrEqualTo(10)).toBe(true);
-        expect(new U256(10).isGreaterThanOrEqualTo(10)).toBe(true);
-        expect(new U256(9).isGreaterThanOrEqualTo(10)).toBe(false);
+        expect(new Uxxx(11).gte(10)).toBe(true);
+        expect(new Uxxx(10).gte(10)).toBe(true);
+        expect(new Uxxx(9).gte(10)).toBe(false);
+        expect(new Uxxx(11).isGreaterThanOrEqualTo(10)).toBe(true);
+        expect(new Uxxx(10).isGreaterThanOrEqualTo(10)).toBe(true);
+        expect(new Uxxx(9).isGreaterThanOrEqualTo(10)).toBe(false);
 
-        expect(new U256(11).lt(10)).toBe(false);
-        expect(new U256(10).lt(10)).toBe(false);
-        expect(new U256(9).lt(10)).toBe(true);
-        expect(new U256(11).isLessThan(10)).toBe(false);
-        expect(new U256(10).isLessThan(10)).toBe(false);
-        expect(new U256(9).isLessThan(10)).toBe(true);
+        expect(new Uxxx(11).lt(10)).toBe(false);
+        expect(new Uxxx(10).lt(10)).toBe(false);
+        expect(new Uxxx(9).lt(10)).toBe(true);
+        expect(new Uxxx(11).isLessThan(10)).toBe(false);
+        expect(new Uxxx(10).isLessThan(10)).toBe(false);
+        expect(new Uxxx(9).isLessThan(10)).toBe(true);
 
-        expect(new U256(11).lte(10)).toBe(false);
-        expect(new U256(10).lte(10)).toBe(true);
-        expect(new U256(9).lte(10)).toBe(true);
-        expect(new U256(11).isLessThanOrEqualTo(10)).toBe(false);
-        expect(new U256(10).isLessThanOrEqualTo(10)).toBe(true);
-        expect(new U256(9).isLessThanOrEqualTo(10)).toBe(true);
+        expect(new Uxxx(11).lte(10)).toBe(false);
+        expect(new Uxxx(10).lte(10)).toBe(true);
+        expect(new Uxxx(9).lte(10)).toBe(true);
+        expect(new Uxxx(11).isLessThanOrEqualTo(10)).toBe(false);
+        expect(new Uxxx(10).isLessThanOrEqualTo(10)).toBe(true);
+        expect(new Uxxx(9).isLessThanOrEqualTo(10)).toBe(true);
     });
 });
