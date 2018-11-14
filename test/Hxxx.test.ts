@@ -17,6 +17,22 @@ describe.each([
         expect(typeof obj[className]).toBe("function");
     });
 
+    test("new", () => {
+        const zero = _.repeat("00", byteLength);
+        expect(() => {
+            new Hxxx(zero);
+            new Hxxx(`0x${zero}`);
+        }).not.toThrow();
+
+        expect(() => {
+            new Hxxx(zero + "0");
+        }).toThrow(String(byteLength));
+
+        expect(() => {
+            new Hxxx(zero.substr(1));
+        }).toThrow(String(byteLength));
+    });
+
     test("check", () => {
         const zero = _.repeat("00", byteLength);
         expect(Hxxx.check(new Hxxx(zero))).toBe(true);
@@ -28,9 +44,83 @@ describe.each([
         expect(Hxxx.check(zero + "0")).toBe(false);
     });
 
-    test.skip("ensure", done => done.fail("not implemented"));
-    test.skip("fromBytes", done => done.fail("not implemented"));
-    test.skip("isEqualTo", done => done.fail("not implemented"));
-    test.skip("rlpBytes", done => done.fail("not implemented"));
-    test.skip("toEncodeObject", done => done.fail("not implemented"));
+    test("ensure", () => {
+        const zero = _.repeat("00", byteLength);
+        expect(Hxxx.ensure(zero)).toEqual(new Hxxx(zero));
+        expect(Hxxx.ensure(new Hxxx(zero))).toEqual(new Hxxx(zero));
+    });
+
+    test("fromBytes", () => {
+        const zero = _.repeat("00", byteLength);
+        let zeroBytes: Buffer;
+        if (byteLength <= 55) {
+            zeroBytes = Buffer.from([
+                0x80 + byteLength,
+                ..._.times(byteLength, () => 0)
+            ]);
+        } else if (byteLength <= 0xff) {
+            zeroBytes = Buffer.from([
+                0xb8,
+                byteLength,
+                ..._.times(byteLength, () => 0)
+            ]);
+        } else {
+            throw Error(`Not implemented`);
+        }
+
+        expect(Hxxx.fromBytes(zeroBytes)).toEqual(new Hxxx(zero));
+    });
+
+    test("fromBytes throws", () => {
+        let longerZeroBytes: Buffer;
+        if (byteLength <= 55) {
+            longerZeroBytes = Buffer.from([
+                0x80 + byteLength + 1,
+                ..._.times(byteLength + 1, () => 0)
+            ]);
+        } else if (byteLength <= 0xff) {
+            longerZeroBytes = Buffer.from([
+                0xb8,
+                byteLength + 1,
+                ..._.times(byteLength + 1, () => 0)
+            ]);
+        } else {
+            throw Error(`Not implemented`);
+        }
+
+        expect(() => {
+            Hxxx.fromBytes(longerZeroBytes);
+        }).toThrow("RLP");
+    });
+
+    test("isEqualTo", () => {
+        const zero = _.repeat("00", byteLength);
+        const one = _.repeat("00", byteLength - 1) + "01";
+
+        expect(new Hxxx(zero).isEqualTo(new Hxxx(zero))).toBe(true);
+        expect(new Hxxx(zero).isEqualTo(new Hxxx(one))).toBe(false);
+    });
+
+    test("rlpBytes", () => {
+        const zero = _.repeat("00", byteLength);
+        if (byteLength <= 55) {
+            expect(new Hxxx(zero).rlpBytes()).toEqual(
+                Buffer.from([
+                    0x80 + byteLength,
+                    ..._.times(byteLength, () => 0)
+                ])
+            );
+        } else if (byteLength <= 0xff) {
+            expect(new Hxxx(zero).rlpBytes()).toEqual(
+                Buffer.from([0xb8, byteLength, ..._.times(byteLength, () => 0)])
+            );
+        } else {
+            throw Error("Not implemented");
+        }
+    });
+
+    test("toEncodeObject", () => {
+        const zero = _.repeat("00", byteLength);
+        expect(new Hxxx(zero).toEncodeObject()).toEqual(`0x${zero}`);
+    });
 });
