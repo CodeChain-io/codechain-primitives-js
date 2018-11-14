@@ -1,7 +1,9 @@
 import { BigNumber } from "bignumber.js";
 
+import { U64 } from "./U64";
+
 // FIXME: export
-type U256Value = U256 | BigNumber | number | string;
+type U256Value = U256 | U64 | BigNumber | number | string;
 
 /**
  * @hidden
@@ -9,7 +11,7 @@ type U256Value = U256 | BigNumber | number | string;
 const RLP = require("rlp");
 
 /**
- * Handles 256-bit unsigned integers. Used to express nonce, asset amount, etc.
+ * Handles 256-bit unsigned integers.
  */
 export class U256 {
     public static MAX_VALUE = new U256(
@@ -18,9 +20,9 @@ export class U256 {
         )
     );
 
-    public static plus(lhs: U256Value, rhs: U256Value): U256 {
-        lhs = U256.ensure(lhs);
-        rhs = U256.ensure(rhs);
+    public static plus(lhsValue: U256Value, rhsValue: U256Value): U256 {
+        const lhs = U256.ensure(lhsValue);
+        const rhs = U256.ensure(rhsValue);
         const result = lhs.value.plus(rhs.value);
         if (result.isGreaterThan(U256.MAX_VALUE.value)) {
             throw Error(`Integer overflow`);
@@ -28,18 +30,18 @@ export class U256 {
         return new U256(result);
     }
 
-    public static minus(lhs: U256Value, rhs: U256Value): U256 {
-        lhs = U256.ensure(lhs);
-        rhs = U256.ensure(rhs);
+    public static minus(lhsValue: U256Value, rhsValue: U256Value): U256 {
+        const lhs = U256.ensure(lhsValue);
+        const rhs = U256.ensure(rhsValue);
         if (lhs.isLessThan(rhs)) {
             throw Error(`Integer underflow`);
         }
         return new U256(lhs.value.minus(rhs.value));
     }
 
-    public static times(lhs: U256Value, rhs: U256Value): U256 {
-        lhs = U256.ensure(lhs);
-        rhs = U256.ensure(rhs);
+    public static times(lhsValue: U256Value, rhsValue: U256Value): U256 {
+        const lhs = U256.ensure(lhsValue);
+        const rhs = U256.ensure(rhsValue);
         const result = lhs.value.times(rhs.value);
         if (result.isGreaterThan(U256.MAX_VALUE.value)) {
             throw Error(`Integer overflow`);
@@ -47,18 +49,18 @@ export class U256 {
         return new U256(result);
     }
 
-    public static idiv(lhs: U256Value, rhs: U256Value): U256 {
-        lhs = U256.ensure(lhs);
-        rhs = U256.ensure(rhs);
+    public static idiv(lhsValue: U256Value, rhsValue: U256Value): U256 {
+        const lhs = U256.ensure(lhsValue);
+        const rhs = U256.ensure(rhsValue);
         if (rhs.isEqualTo(0)) {
             throw Error(`Divided by 0`);
         }
         return new U256(lhs.value.idiv(rhs.value));
     }
 
-    public static mod(lhs: U256Value, rhs: U256Value): U256 {
-        lhs = U256.ensure(lhs);
-        rhs = U256.ensure(rhs);
+    public static mod(lhsValue: U256Value, rhsValue: U256Value): U256 {
+        const lhs = U256.ensure(lhsValue);
+        const rhs = U256.ensure(rhsValue);
         if (rhs.isEqualTo(0)) {
             throw Error(`Divided by 0`);
         }
@@ -88,8 +90,8 @@ export class U256 {
         );
     }
 
-    public static check(param: any) {
-        if (param instanceof U256) {
+    public static check(param: any): boolean {
+        if (param instanceof U256 || param instanceof U64) {
             return true;
         } else if (param instanceof BigNumber) {
             return (
@@ -104,8 +106,10 @@ export class U256 {
         }
     }
 
-    public static ensure(param: U256Value) {
-        return param instanceof U256 ? param : new U256(param);
+    public static ensure(param: U256Value): U256 {
+        return param instanceof U256
+            ? param
+            : new U256(param instanceof U64 ? param.value : param);
     }
 
     private static checkString(param: string): boolean {
@@ -122,8 +126,8 @@ export class U256 {
 
     public value: BigNumber;
 
-    constructor(value: number | string | BigNumber) {
-        this.value = new BigNumber(value);
+    constructor(value: number | string | BigNumber | U64) {
+        this.value = new BigNumber(value instanceof U64 ? value.value : value);
         if (!this.value.isInteger() || this.value.isNegative()) {
             throw Error(`U256 must be a positive integer but found ${value}`);
         } else if (this.value.toString(16).length > 64) {

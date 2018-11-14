@@ -1,3 +1,5 @@
+import BigNumber from "bignumber.js";
+
 import { H128, H160, H256, H512, U256, U64 } from "..";
 
 describe("H128", () => {
@@ -86,6 +88,18 @@ describe.each([[U64, "U64"], [U256, "U256"]])("%p", (Uxxx, className) => {
     test("require", () => {
         const obj = require("..");
         expect(typeof obj[className]).toBe("function");
+    });
+
+    test("new", () => {
+        expect(new Uxxx(16).eq(new Uxxx("16"))).toBe(true);
+        expect(new Uxxx(16).eq(new Uxxx("0x10"))).toBe(true);
+        expect(new Uxxx(16).eq(new Uxxx(new BigNumber(16)))).toBe(true);
+        expect(new Uxxx(16).eq(new Uxxx(new BigNumber("16")))).toBe(true);
+        expect(new Uxxx(16).eq(new Uxxx(new BigNumber("0x10")))).toBe(true);
+
+        if (Uxxx === U256) {
+            expect(new Uxxx(16).eq(new U256(new U64(16)))).toBe(true);
+        }
     });
 
     test("check", () => {
