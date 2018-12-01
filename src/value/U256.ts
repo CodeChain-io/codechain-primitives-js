@@ -204,4 +204,8 @@ export class U256 {
     public toString(base?: 10 | 16) {
         return this.value.toString(base || 10);
     }
+
+    public toJSON() {
+        return `0x${this.value.toString(16)}`;
+    }
 }

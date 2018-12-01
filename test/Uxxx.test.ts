@@ -149,6 +149,11 @@ describe.each([[U64, "U64", 8], [U256, "U256", 32]])(
             expect(new Uxxx(0xff).toString(16)).toBe("ff");
         });
 
+        test("toJSON", () => {
+            expect(new Uxxx(0).toJSON()).toBe("0x0");
+            expect(new Uxxx(0xff).toJSON()).toBe("0xff");
+        });
+
         test("plus", () => {
             expect(Uxxx.plus(10, 5)).toEqual(new Uxxx(10 + 5));
             expect(() => {

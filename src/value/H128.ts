@@ -65,4 +65,8 @@ export class H128 {
     public toString(): string {
         return this.value;
     }
+
+    public toJSON() {
+        return `0x${this.value}`;
+    }
 }
