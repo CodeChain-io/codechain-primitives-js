@@ -19,18 +19,10 @@ describe.each([
 
     test("new", () => {
         const zero = _.repeat("00", byteLength);
-        expect(() => {
-            new Hxxx(zero);
-            new Hxxx(`0x${zero}`);
-        }).not.toThrow();
-
-        expect(() => {
-            new Hxxx(zero + "0");
-        }).toThrow(String(byteLength));
-
-        expect(() => {
-            new Hxxx(zero.substr(1));
-        }).toThrow(String(byteLength));
+        expect(() => new Hxxx(zero)).not.toThrow();
+        expect(() => new Hxxx(`0x${zero}`)).not.toThrow();
+        expect(() => new Hxxx(zero + "0")).toThrow(String(byteLength));
+        expect(() => new Hxxx(zero.substr(1))).toThrow(String(byteLength));
     });
 
     test("check", () => {
