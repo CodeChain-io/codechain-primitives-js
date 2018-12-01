@@ -61,4 +61,8 @@ export class H256 {
     public isEqualTo(rhs: H256): boolean {
         return this.value === rhs.value;
     }
+
+    public toString(): string {
+        return this.value;
+    }
 }

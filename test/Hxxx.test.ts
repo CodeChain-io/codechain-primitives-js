@@ -123,4 +123,9 @@ describe.each([
         const zero = _.repeat("00", byteLength);
         expect(new Hxxx(zero).toEncodeObject()).toEqual(`0x${zero}`);
     });
+
+    test("toString", () => {
+        const zero = _.repeat("00", byteLength);
+        expect(new Hxxx(zero).toString()).toBe(zero);
+    });
 });

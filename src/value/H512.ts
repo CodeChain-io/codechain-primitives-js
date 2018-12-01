@@ -62,4 +62,8 @@ export class H512 {
     public isEqualTo(rhs: H512): boolean {
         return this.value === rhs.value;
     }
+
+    public toString(): string {
+        return this.value;
+    }
 }
