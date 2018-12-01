@@ -128,4 +128,9 @@ describe.each([
         const zero = _.repeat("00", byteLength);
         expect(new Hxxx(zero).toString()).toBe(zero);
     });
+
+    test("toJSON", () => {
+        const zero = _.repeat("00", byteLength);
+        expect(new Hxxx(zero).toJSON()).toBe(`0x${zero}`);
+    });
 });
