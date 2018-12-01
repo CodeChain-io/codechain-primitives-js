@@ -61,4 +61,8 @@ export class H160 {
     public isEqualTo(rhs: H160): boolean {
         return this.value === rhs.value;
     }
+
+    public toString(): string {
+        return this.value;
+    }
 }
