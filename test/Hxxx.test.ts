@@ -42,25 +42,48 @@ describe.each([
         expect(Hxxx.ensure(new Hxxx(zero))).toEqual(new Hxxx(zero));
     });
 
-    test("fromBytes", () => {
-        const zero = _.repeat("00", byteLength);
-        let zeroBytes: Buffer;
-        if (byteLength <= 55) {
-            zeroBytes = Buffer.from([
-                0x80 + byteLength,
-                ..._.times(byteLength, () => 0)
-            ]);
-        } else if (byteLength <= 0xff) {
-            zeroBytes = Buffer.from([
-                0xb8,
-                byteLength,
-                ..._.times(byteLength, () => 0)
-            ]);
-        } else {
-            throw Error(`Not implemented`);
-        }
+    describe("fromBytes", () => {
+        test("zero", () => {
+            const zero = _.repeat("00", byteLength);
+            let zeroBytes: Buffer;
+            if (byteLength <= 55) {
+                zeroBytes = Buffer.from([
+                    0x80 + byteLength,
+                    ..._.times(byteLength, () => 0)
+                ]);
+            } else if (byteLength <= 0xff) {
+                zeroBytes = Buffer.from([
+                    0xb8,
+                    byteLength,
+                    ..._.times(byteLength, () => 0)
+                ]);
+            } else {
+                throw Error(`Not implemented`);
+            }
 
-        expect(Hxxx.fromBytes(zeroBytes)).toEqual(new Hxxx(zero));
+            expect(Hxxx.fromBytes(zeroBytes)).toEqual(new Hxxx(zero));
+        });
+
+        test("FF", () => {
+            const value = _.repeat("FF", byteLength);
+            let bytes: Buffer;
+            if (byteLength <= 55) {
+                bytes = Buffer.from([
+                    0x80 + byteLength,
+                    ..._.times(byteLength, () => 255)
+                ]);
+            } else if (byteLength <= 0xff) {
+                bytes = Buffer.from([
+                    0xb8,
+                    byteLength,
+                    ..._.times(byteLength, () => 255)
+                ]);
+            } else {
+                throw Error(`Not implemented`);
+            }
+
+            expect(Hxxx.fromBytes(bytes)).toEqual(new Hxxx(value));
+        });
     });
 
     test("fromBytes throws", () => {
