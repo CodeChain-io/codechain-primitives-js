@@ -2,6 +2,9 @@ import BigNumber from "bignumber.js";
 
 import { U256, U64 } from "..";
 
+const TOO_LARGE =
+    "0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF";
+
 describe.each([[U64, "U64", 8], [U256, "U256", 32]])(
     "%p",
     (Uxxx, className, byteLength) => {
@@ -21,6 +24,8 @@ describe.each([[U64, "U64", 8], [U256, "U256", 32]])(
             expect(new Uxxx(16).eq(new Uxxx(new BigNumber("16")))).toBe(true);
             expect(new Uxxx(16).eq(new Uxxx(new BigNumber("0x10")))).toBe(true);
 
+            expect(() => new Uxxx(TOO_LARGE)).toThrow();
+
             if (Uxxx === U256) {
                 expect(new Uxxx(16).eq(new U256(new U64(16)))).toBe(true);
             }
@@ -32,6 +37,10 @@ describe.each([[U64, "U64", 8], [U256, "U256", 32]])(
             expect(Uxxx.check(-1)).toBe(false);
             expect(Uxxx.check(0.5)).toBe(false);
             expect(Uxxx.check(0.5)).toBe(false);
+
+            expect(Uxxx.check(new BigNumber(-1))).toBe(false);
+            expect(Uxxx.check(new BigNumber(0.5))).toBe(false);
+            expect(Uxxx.check(new BigNumber(TOO_LARGE))).toBe(false);
 
             expect(Uxxx.check(0)).toBe(true);
             expect(Uxxx.check("0")).toBe(true);
@@ -134,7 +143,10 @@ describe.each([[U64, "U64", 8], [U256, "U256", 32]])(
 
         test("toString", () => {
             expect(new Uxxx(0).toString()).toBe("0");
-            expect(new Uxxx(0xff).toString()).toBe("255");
+            expect(new Uxxx(0).toString(10)).toBe("0");
+            expect(new Uxxx(0).toString(16)).toBe("0");
+            expect(new Uxxx(0xff).toString(10)).toBe("255");
+            expect(new Uxxx(0xff).toString(16)).toBe("ff");
         });
 
         test("plus", () => {
