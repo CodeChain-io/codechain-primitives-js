@@ -25,6 +25,12 @@ export class H256 {
         );
     }
 
+    public static zero(): H256 {
+        return new H256(
+            "0000000000000000000000000000000000000000000000000000000000000000"
+        );
+    }
+
     public static check(param: any): boolean {
         return param instanceof H256 ? true : H256.checkString(param);
     }

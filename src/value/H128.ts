@@ -25,6 +25,10 @@ export class H128 {
         );
     }
 
+    public static zero(): H128 {
+        return new H128("00000000000000000000000000000000");
+    }
+
     public static check(param: any): boolean {
         return param instanceof H128 ? true : H128.checkString(param);
     }
