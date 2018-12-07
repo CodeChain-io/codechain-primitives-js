@@ -25,6 +25,11 @@ describe.each([
         expect(() => new Hxxx(zero.substr(1))).toThrow(String(byteLength));
     });
 
+    test("zero", () => {
+        const zero = _.repeat("00", byteLength);
+        expect(Hxxx.zero()).toEqual(new Hxxx(zero));
+    });
+
     test("check", () => {
         const zero = _.repeat("00", byteLength);
         expect(Hxxx.check(new Hxxx(zero))).toBe(true);
