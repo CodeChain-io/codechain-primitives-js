@@ -56,6 +56,10 @@ describe.each([[U64, "U64", 8], [U256, "U256", 32]])(
             expect(Uxxx.ensure("10")).toEqual(new Uxxx(10));
             expect(Uxxx.ensure("0xA")).toEqual(new Uxxx(10));
             expect(Uxxx.ensure(new Uxxx(10))).toEqual(new Uxxx(10));
+
+            if (Uxxx === U256) {
+                expect(Uxxx.ensure(new U64(10))).toEqual(new Uxxx(10));
+            }
         });
 
         test("fromBytes", () => {
