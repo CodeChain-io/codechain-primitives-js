@@ -26,6 +26,12 @@ export class H512 {
         );
     }
 
+    public static zero(): H512 {
+        return new H512(
+            "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+        );
+    }
+
     public static check(param: any): boolean {
         return param instanceof H512 ? true : H512.checkString(param);
     }

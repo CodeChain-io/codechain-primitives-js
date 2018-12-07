@@ -25,6 +25,10 @@ export class H160 {
         );
     }
 
+    public static zero(): H160 {
+        return new H160("0000000000000000000000000000000000000000");
+    }
+
     public static check(param: any): boolean {
         return param instanceof H160 ? true : H160.checkString(param);
     }
