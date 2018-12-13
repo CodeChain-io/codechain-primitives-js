@@ -1,13 +1,13 @@
 import {
-    signEcdsa,
-    verifyEcdsa,
-    recoverEcdsa,
-    SchnorrSignature,
-    signSchnorr,
-    verifySchnorr,
-    recoverSchnorr,
     generatePrivateKey,
-    getPublicFromPrivate
+    getPublicFromPrivate,
+    recoverEcdsa,
+    recoverSchnorr,
+    SchnorrSignature,
+    signEcdsa,
+    signSchnorr,
+    verifyEcdsa,
+    verifySchnorr
 } from "..";
 
 test("generatePrivateKey", () => {

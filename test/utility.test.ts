@@ -1,9 +1,9 @@
 import {
-    toHex,
+    generatePrivateKey,
     getAccountIdFromPrivate,
     getAccountIdFromPublic,
-    generatePrivateKey,
-    getPublicFromPrivate
+    getPublicFromPrivate,
+    toHex
 } from "..";
 
 test.each([
