@@ -1,11 +1,11 @@
 import BigNumber from "bignumber.js";
 
-import { U256, U64 } from "..";
+import { U128, U256, U64 } from "..";
 
 const TOO_LARGE =
     "0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF";
 
-describe.each([[U64, "U64", 8], [U256, "U256", 32]])(
+describe.each([[U64, "U64", 8], [U128, "U128", 16], [U256, "U256", 32]])(
     "%p",
     (Uxxx, className, byteLength) => {
         test("import", () => {
