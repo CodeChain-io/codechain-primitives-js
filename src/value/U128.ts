@@ -133,6 +133,26 @@ export class U128 {
         }
     }
 
+    public plus(rhsValue: U128Value): U128 {
+        return U128.plus(this, rhsValue);
+    }
+
+    public minus(rhsValue: U128Value): U128 {
+        return U128.minus(this, rhsValue);
+    }
+
+    public times(rhsValue: U128Value): U128 {
+        return U128.times(this, rhsValue);
+    }
+
+    public idiv(rhsValue: U128Value): U128 {
+        return U128.idiv(this, rhsValue);
+    }
+
+    public mod(rhsValue: U128Value): U128 {
+        return U128.mod(this, rhsValue);
+    }
+
     public toEncodeObject(): string | number {
         const hex = this.value.toString(16);
         // NOTE: workaround that RLP.encode("0x0") results to 00

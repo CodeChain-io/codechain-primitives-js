@@ -139,6 +139,26 @@ export class U256 {
         }
     }
 
+    public plus(rhsValue: U256Value): U256 {
+        return U256.plus(this, rhsValue);
+    }
+
+    public minus(rhsValue: U256Value): U256 {
+        return U256.minus(this, rhsValue);
+    }
+
+    public times(rhsValue: U256Value): U256 {
+        return U256.times(this, rhsValue);
+    }
+
+    public idiv(rhsValue: U256Value): U256 {
+        return U256.idiv(this, rhsValue);
+    }
+
+    public mod(rhsValue: U256Value): U256 {
+        return U256.mod(this, rhsValue);
+    }
+
     /**
      * @deprecated
      */
