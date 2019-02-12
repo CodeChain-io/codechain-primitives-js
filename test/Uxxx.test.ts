@@ -166,6 +166,15 @@ describe.each([[U64, "U64", 8], [U128, "U128", 16], [U256, "U256", 32]])(
             expect(() => {
                 Uxxx.plus(-1, 0);
             }).toThrow(className);
+
+            let a = new Uxxx(10);
+            let b = new Uxxx(5);
+            expect(a.plus(b)).toEqual(new Uxxx(15));
+            a = new Uxxx(Uxxx.MAX_VALUE);
+            b = new Uxxx(1);
+            expect(() => {
+                a.plus(b);
+            }).toThrow("overflow");
         });
 
         test("minus", () => {
@@ -176,6 +185,15 @@ describe.each([[U64, "U64", 8], [U128, "U128", 16], [U256, "U256", 32]])(
             expect(() => {
                 Uxxx.minus(-1, -1);
             }).toThrow(className);
+
+            let a = new Uxxx(10);
+            let b = new Uxxx(5);
+            expect(a.minus(b)).toEqual(new Uxxx(10 - 5));
+            a = new Uxxx(5);
+            b = new Uxxx(10);
+            expect(() => {
+                a.minus(b);
+            }).toThrow("underflow");
         });
 
         test("times", () => {
@@ -188,6 +206,21 @@ describe.each([[U64, "U64", 8], [U128, "U128", 16], [U256, "U256", 32]])(
             expect(() => {
                 Uxxx.times(-1, -1);
             }).toThrow(className);
+
+            let a = new Uxxx(10);
+            let b = new Uxxx(5);
+            expect(a.times(b)).toEqual(new Uxxx(10 * 5));
+            a = new Uxxx(Uxxx.MAX_VALUE);
+            b = new Uxxx(0);
+            expect(a.times(b)).toEqual(new Uxxx(0));
+            a = new Uxxx(Uxxx.MAX_VALUE);
+            b = new Uxxx(1);
+            expect(a.times(b)).toEqual(Uxxx.MAX_VALUE);
+            a = new Uxxx(Uxxx.MAX_VALUE);
+            b = new Uxxx(2);
+            expect(() => {
+                a.times(b);
+            }).toThrow("overflow");
         });
 
         test("idiv", () => {
@@ -199,6 +232,18 @@ describe.each([[U64, "U64", 8], [U128, "U128", 16], [U256, "U256", 32]])(
             expect(() => {
                 Uxxx.idiv(-1, -1);
             }).toThrow(className);
+
+            let a = new Uxxx(10);
+            let b = new Uxxx(5);
+            expect(a.idiv(b)).toEqual(new Uxxx(10 / 5));
+            a = new Uxxx(14);
+            b = new Uxxx(5);
+            expect(a.idiv(b)).toEqual(new Uxxx(2));
+            a = new Uxxx(10);
+            b = new Uxxx(0);
+            expect(() => {
+                a.idiv(b);
+            }).toThrow("Divided by 0");
         });
 
         test("mod", () => {
@@ -210,6 +255,18 @@ describe.each([[U64, "U64", 8], [U128, "U128", 16], [U256, "U256", 32]])(
             expect(() => {
                 Uxxx.mod(-1, -1);
             }).toThrow(className);
+
+            let a = new Uxxx(10);
+            let b = new Uxxx(5);
+            expect(a.mod(b)).toEqual(new Uxxx(0));
+            a = new Uxxx(14);
+            b = new Uxxx(5);
+            expect(a.mod(b)).toEqual(new Uxxx(4));
+            a = new Uxxx(10);
+            b = new Uxxx(0);
+            expect(() => {
+                a.mod(b);
+            }).toThrow("Divided by 0");
         });
 
         test("Comparison", () => {
