@@ -170,14 +170,6 @@ export class U256 {
         return U256.mod(this, rhsValue);
     }
 
-    /**
-     * @deprecated
-     */
-    public increase(): U256 {
-        console.warn("U256 increase() is deprecated. Use U256.plus() instead.");
-        return new U256(this.value.plus(1));
-    }
-
     public toEncodeObject(): string | number {
         const hex = this.value.toString(16);
         // NOTE: workaround that RLP.encode("0x0") results to 00
