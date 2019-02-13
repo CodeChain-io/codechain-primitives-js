@@ -96,15 +96,6 @@ describe.each([[U64, "U64", 8], [U128, "U128", 16], [U256, "U256", 32]])(
             }).toThrow(`RLP`);
         });
 
-        if (Uxxx === U256) {
-            test("increase", () => {
-                const a = new Uxxx(0);
-                const b = a.increase();
-                expect(a).toEqual(new Uxxx(0));
-                expect(b).toEqual(new Uxxx(1));
-            });
-        }
-
         test("isEqualTo", () => {
             expect(new Uxxx(0).isEqualTo(new Uxxx(0))).toEqual(true);
             expect(new Uxxx(1000000).isEqualTo(new Uxxx(1000000))).toEqual(
