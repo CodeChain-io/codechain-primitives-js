@@ -8,6 +8,8 @@ import { H512 } from "../value/H512";
 
 import { decode, encode, fromWords, toWords } from "./bech32";
 
+export type PlatformAddressValue = PlatformAddress | string;
+
 /**
  * The bech32 form of account id. The human readable part(HRP) is used to
  * represent the network. For platform address, the HRP is "ccc" for mainnet or
@@ -94,7 +96,7 @@ export class PlatformAddress {
             : PlatformAddress.checkString(address);
     }
 
-    public static ensure(address: PlatformAddress | string): PlatformAddress {
+    public static ensure(address: PlatformAddressValue): PlatformAddress {
         if (address instanceof PlatformAddress) {
             return address;
         } else if (typeof address === "string") {

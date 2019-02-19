@@ -3,6 +3,8 @@
  */
 const RLP = require("rlp");
 
+export type H512Value = H512 | string;
+
 /**
  * Handles 512-bit data. Used to express public keys.
  */
@@ -36,7 +38,7 @@ export class H512 {
         return param instanceof H512 ? true : H512.checkString(param);
     }
 
-    public static ensure(param: H512 | string): H512 {
+    public static ensure(param: H512Value): H512 {
         return param instanceof H512 ? param : new H512(param);
     }
 

@@ -1,14 +1,20 @@
-export { AssetTransferAddress } from "./address/AssetTransferAddress";
-export { PlatformAddress } from "./address/PlatformAddress";
+export {
+    AssetTransferAddress,
+    AssetTransferAddressValue
+} from "./address/AssetTransferAddress";
+export {
+    PlatformAddress,
+    PlatformAddressValue
+} from "./address/PlatformAddress";
 
-export { H128 } from "./value/H128";
-export { H160 } from "./value/H160";
-export { H256 } from "./value/H256";
-export { H512 } from "./value/H512";
+export { H128, H128Value } from "./value/H128";
+export { H160, H160Value } from "./value/H160";
+export { H256, H256Value } from "./value/H256";
+export { H512, H512Value } from "./value/H512";
 
-export { U64 } from "./value/U64";
-export { U128 } from "./value/U128";
-export { U256 } from "./value/U256";
+export { U64, U64Value } from "./value/U64";
+export { U128, U128Value } from "./value/U128";
+export { U256, U256Value } from "./value/U256";
 
 export {
     blake128,
