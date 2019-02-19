@@ -3,6 +3,8 @@
  */
 const RLP = require("rlp");
 
+export type H256Value = H256 | string;
+
 /**
  * Handles 256-bit data. Used to express block hash, parcel hash, transaction hash, merkle root, etc.
  */
@@ -35,7 +37,7 @@ export class H256 {
         return param instanceof H256 ? true : H256.checkString(param);
     }
 
-    public static ensure(param: H256 | string): H256 {
+    public static ensure(param: H256Value): H256 {
         return param instanceof H256 ? param : new H256(param);
     }
 

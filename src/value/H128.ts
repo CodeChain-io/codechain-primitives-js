@@ -3,6 +3,8 @@
  */
 const RLP = require("rlp");
 
+export type H128Value = H128 | string;
+
 /**
  * Handles 128-bit data.
  */
@@ -33,7 +35,7 @@ export class H128 {
         return param instanceof H128 ? true : H128.checkString(param);
     }
 
-    public static ensure(param: H128 | string): H128 {
+    public static ensure(param: H128Value): H128 {
         return param instanceof H128 ? param : new H128(param);
     }
 

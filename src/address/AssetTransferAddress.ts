@@ -6,6 +6,8 @@ import { H160 } from "../value/H160";
 
 import { decode, encode, fromWords, toWords } from "./bech32";
 
+export type AssetTransferAddressValue = AssetTransferAddress | string;
+
 export type PublicKeyHashValue = H160 | string;
 export type PublicKeyHash = H160;
 
@@ -100,7 +102,7 @@ export class AssetTransferAddress {
             : AssetTransferAddress.checkString(address);
     }
 
-    public static ensure(address: AssetTransferAddress | string) {
+    public static ensure(address: AssetTransferAddressValue) {
         return address instanceof AssetTransferAddress
             ? address
             : AssetTransferAddress.fromString(address);

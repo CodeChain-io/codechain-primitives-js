@@ -3,6 +3,8 @@
  */
 const RLP = require("rlp");
 
+export type H160Value = H160 | string;
+
 /**
  * Handles 160-bit data. Used to express account addresses.
  */
@@ -33,7 +35,7 @@ export class H160 {
         return param instanceof H160 ? true : H160.checkString(param);
     }
 
-    public static ensure(param: H160 | string): H160 {
+    public static ensure(param: H160Value): H160 {
         return param instanceof H160 ? param : new H160(param);
     }
 

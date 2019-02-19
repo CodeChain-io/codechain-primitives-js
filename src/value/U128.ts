@@ -1,9 +1,8 @@
 import { BigNumber } from "bignumber.js";
 
-import { U64 } from "./U64";
+import { U64, U64Value } from "./U64";
 
-// FIXME: export
-type U128Value = U128 | U64 | BigNumber | number | string;
+export type U128Value = U128 | U64Value;
 
 /**
  * @hidden
