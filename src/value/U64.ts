@@ -209,7 +209,7 @@ export class U64 {
         return this.value.toString(base || 10);
     }
 
-    public toJSON() {
+    public toJSON(): string {
         return `0x${this.value.toString(16)}`;
     }
 }

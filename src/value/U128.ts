@@ -1,7 +1,9 @@
 import { BigNumber } from "bignumber.js";
 
+import { U64 } from "./U64";
+
 // FIXME: export
-type U128Value = U128 | BigNumber | number | string;
+type U128Value = U128 | U64 | BigNumber | number | string;
 
 /**
  * @hidden
@@ -87,7 +89,7 @@ export class U128 {
     }
 
     public static check(param: any) {
-        if (param instanceof U128) {
+        if (param instanceof U128 || param instanceof U64) {
             return true;
         } else if (param instanceof BigNumber) {
             return (
@@ -120,8 +122,8 @@ export class U128 {
 
     public readonly value: BigNumber;
 
-    constructor(value: number | string | BigNumber) {
-        this.value = new BigNumber(value);
+    constructor(value: number | string | BigNumber | U64) {
+        this.value = new BigNumber(value instanceof U64 ? value.value : value);
         if (!this.value.isInteger() || this.value.isNegative()) {
             throw Error(`U128 must be a positive integer but found ${value}`);
         } else if (this.value.toString(16).length > 32) {
@@ -211,7 +213,7 @@ export class U128 {
         return this.value.toString(base || 10);
     }
 
-    public toJSON() {
+    public toJSON(): string {
         return `0x${this.value.toString(16)}`;
     }
 }

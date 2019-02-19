@@ -1,9 +1,10 @@
 import { BigNumber } from "bignumber.js";
 
+import { U128 } from "./U128";
 import { U64 } from "./U64";
 
 // FIXME: export
-type U256Value = U256 | U64 | BigNumber | number | string;
+type U256Value = U256 | U128 | U64 | BigNumber | number | string;
 
 /**
  * @hidden
@@ -91,7 +92,11 @@ export class U256 {
     }
 
     public static check(param: any): boolean {
-        if (param instanceof U256 || param instanceof U64) {
+        if (
+            param instanceof U256 ||
+            param instanceof U128 ||
+            param instanceof U64
+        ) {
             return true;
         } else if (param instanceof BigNumber) {
             return (
@@ -109,7 +114,11 @@ export class U256 {
     public static ensure(param: U256Value): U256 {
         return param instanceof U256
             ? param
-            : new U256(param instanceof U64 ? param.value : param);
+            : new U256(
+                  param instanceof U128 || param instanceof U64
+                      ? param.value
+                      : param
+              );
     }
 
     private static checkString(param: string): boolean {
@@ -126,8 +135,10 @@ export class U256 {
 
     public value: BigNumber;
 
-    constructor(value: number | string | BigNumber | U64) {
-        this.value = new BigNumber(value instanceof U64 ? value.value : value);
+    constructor(value: number | string | BigNumber | U128 | U64) {
+        this.value = new BigNumber(
+            value instanceof U128 || value instanceof U64 ? value.value : value
+        );
         if (!this.value.isInteger() || this.value.isNegative()) {
             throw Error(`U256 must be a positive integer but found ${value}`);
         } else if (this.value.toString(16).length > 64) {
@@ -225,7 +236,7 @@ export class U256 {
         return this.value.toString(base || 10);
     }
 
-    public toJSON() {
+    public toJSON(): string {
         return `0x${this.value.toString(16)}`;
     }
 }
