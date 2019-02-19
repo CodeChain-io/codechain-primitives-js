@@ -28,6 +28,10 @@ describe.each([[U64, "U64", 8], [U128, "U128", 16], [U256, "U256", 32]])(
 
             if (Uxxx === U256) {
                 expect(new Uxxx(16).eq(new U256(new U64(16)))).toBe(true);
+                expect(new Uxxx(16).eq(new U256(new U128(16)))).toBe(true);
+            }
+            if (Uxxx === U128) {
+                expect(new Uxxx(16).eq(new U128(new U64(16)))).toBe(true);
             }
         });
 
@@ -45,7 +49,16 @@ describe.each([[U64, "U64", 8], [U128, "U128", 16], [U256, "U256", 32]])(
             expect(Uxxx.check(0)).toBe(true);
             expect(Uxxx.check("0")).toBe(true);
             expect(Uxxx.check("0x0")).toBe(true);
-            expect(Uxxx.check(new Uxxx(0))).toBe(true);
+
+            if (byteLength >= 32) {
+                expect(Uxxx.check(new U256(0))).toBe(true);
+            }
+            if (byteLength >= 16) {
+                expect(Uxxx.check(new U128(0))).toBe(true);
+            }
+            if (byteLength >= 8) {
+                expect(Uxxx.check(new U64(0))).toBe(true);
+            }
         });
 
         test("ensure", () => {
