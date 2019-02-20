@@ -45,5 +45,6 @@ export {
 export {
     toHex,
     getAccountIdFromPrivate,
-    getAccountIdFromPublic
+    getAccountIdFromPublic,
+    toLocaleString
 } from "./utility";

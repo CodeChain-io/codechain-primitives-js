@@ -1,3 +1,4 @@
+import BigNumber from "bignumber.js";
 import {
     generatePrivateKey,
     getAccountIdFromPrivate,
@@ -5,6 +6,7 @@ import {
     getPublicFromPrivate,
     toHex
 } from "..";
+import { toLocaleString } from "../lib/utility";
 
 test.each([
     [[0x00, 0x01, 0x02], "000102"],
@@ -27,4 +29,15 @@ test("getAccountIdFromPublic", () => {
     const pub = getPublicFromPrivate(priv);
     const accountId = getAccountIdFromPublic(pub);
     expect(/^[0-9a-fA-F]{40}$/.test(accountId)).toBe(true);
+});
+
+test("toLocaleString", () => {
+    expect(toLocaleString(new BigNumber(1234567))).toBe("1,234,567");
+    expect(toLocaleString(new BigNumber(123))).toBe("123");
+    expect(
+        toLocaleString(new BigNumber("1234123412341234.1234123412341234"))
+    ).toBe("1,234,123,412,341,234.1234123412341234");
+    expect(toLocaleString(new BigNumber("-1234234.234134234"))).toBe(
+        "-1,234,234.234134234"
+    );
 });

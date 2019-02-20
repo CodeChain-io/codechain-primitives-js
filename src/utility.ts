@@ -1,3 +1,4 @@
+import BigNumber from "bignumber.js";
 import { blake160 } from "./hash";
 import { getPublicFromPrivate } from "./key/key";
 
@@ -35,4 +36,16 @@ export const getAccountIdFromPrivate = (priv: string): string => {
  */
 export const getAccountIdFromPublic = (publicKey: string): string => {
     return blake160(publicKey);
+};
+
+/**
+ * Converts BigNumber to formatted number string
+ * Default decimalSeparator is point: "."
+ * Default groupSeparator is comma; ","
+ * Default groupSize is 3
+ * @param num BigNumber object
+ * @returns formatted number string
+ */
+export const toLocaleString = (num: BigNumber): string => {
+    return num.toFormat();
 };
