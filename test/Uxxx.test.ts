@@ -311,5 +311,10 @@ describe.each([[U64, "U64", 8], [U128, "U128", 16], [U256, "U256", 32]])(
             expect(new Uxxx(10).isLessThanOrEqualTo(10)).toBe(true);
             expect(new Uxxx(9).isLessThanOrEqualTo(10)).toBe(true);
         });
+
+        test("toLocaleString", () => {
+            expect(new Uxxx(1234567).toLocaleString()).toBe("1,234,567");
+            expect(new Uxxx(123).toLocaleString()).toBe("123");
+        });
     }
 );

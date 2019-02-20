@@ -1,4 +1,5 @@
 import { BigNumber } from "bignumber.js";
+import { toLocaleString } from "../utility";
 
 export type U64Value = U64 | BigNumber | number | string;
 
@@ -206,6 +207,10 @@ export class U64 {
 
     public toString(base?: 10 | 16) {
         return this.value.toString(base || 10);
+    }
+
+    public toLocaleString() {
+        return toLocaleString(this.value);
     }
 
     public toJSON(): string {
