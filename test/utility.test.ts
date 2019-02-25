@@ -4,9 +4,9 @@ import {
     getAccountIdFromPrivate,
     getAccountIdFromPublic,
     getPublicFromPrivate,
-    toHex
+    toHex,
+    toLocaleString
 } from "..";
-import { toLocaleString } from "../lib/utility";
 
 test.each([
     [[0x00, 0x01, 0x02], "000102"],
