@@ -24,7 +24,7 @@ describe.each([[U64, "U64", 8], [U128, "U128", 16], [U256, "U256", 32]])(
             expect(new Uxxx(16).eq(new Uxxx(new BigNumber("16")))).toBe(true);
             expect(new Uxxx(16).eq(new Uxxx(new BigNumber("0x10")))).toBe(true);
 
-            expect(() => new Uxxx(TOO_LARGE)).toThrow();
+            expect(new Uxxx(TOO_LARGE)).toEqual(Uxxx.MAX_VALUE);
 
             if (Uxxx === U256) {
                 expect(new Uxxx(16).eq(new U256(new U64(16)))).toBe(true);
@@ -44,7 +44,7 @@ describe.each([[U64, "U64", 8], [U128, "U128", 16], [U256, "U256", 32]])(
 
             expect(Uxxx.check(new BigNumber(-1))).toBe(false);
             expect(Uxxx.check(new BigNumber(0.5))).toBe(false);
-            expect(Uxxx.check(new BigNumber(TOO_LARGE))).toBe(false);
+            expect(Uxxx.check(new BigNumber(TOO_LARGE))).toBe(true);
 
             expect(Uxxx.check(0)).toBe(true);
             expect(Uxxx.check("0")).toBe(true);

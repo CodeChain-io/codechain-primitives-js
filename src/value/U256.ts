@@ -99,11 +99,7 @@ export class U256 {
         ) {
             return true;
         } else if (param instanceof BigNumber) {
-            return (
-                param.isInteger() &&
-                !param.isNegative() &&
-                param.isLessThanOrEqualTo(U256.MAX_VALUE.value)
-            );
+            return param.isInteger() && !param.isNegative();
         } else if (typeof param === "number") {
             return Number.isInteger(param) && param >= 0;
         } else {
@@ -126,11 +122,7 @@ export class U256 {
             return false;
         }
         const num = new BigNumber(param);
-        return (
-            num.isInteger() &&
-            !num.isNegative() &&
-            num.isLessThanOrEqualTo(U256.MAX_VALUE.value)
-        );
+        return num.isInteger() && !num.isNegative();
     }
 
     public value: BigNumber;
@@ -142,11 +134,7 @@ export class U256 {
         if (!this.value.isInteger() || this.value.isNegative()) {
             throw Error(`U256 must be a positive integer but found ${value}`);
         } else if (this.value.toString(16).length > 64) {
-            throw Error(
-                `Given value is out of range for U256: ${this.value.toString(
-                    16
-                )}`
-            );
+            this.value = U256.MAX_VALUE.value;
         }
     }
 

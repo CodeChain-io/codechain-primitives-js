@@ -92,11 +92,7 @@ export class U128 {
         if (param instanceof U128 || param instanceof U64) {
             return true;
         } else if (param instanceof BigNumber) {
-            return (
-                param.isInteger() &&
-                !param.isNegative() &&
-                param.isLessThanOrEqualTo(U128.MAX_VALUE.value)
-            );
+            return param.isInteger() && !param.isNegative();
         } else if (typeof param === "number") {
             return Number.isInteger(param) && param >= 0;
         } else {
@@ -113,11 +109,7 @@ export class U128 {
             return false;
         }
         const num = new BigNumber(param);
-        return (
-            num.isInteger() &&
-            !num.isNegative() &&
-            num.isLessThanOrEqualTo(U128.MAX_VALUE.value)
-        );
+        return num.isInteger() && !num.isNegative();
     }
 
     public readonly value: BigNumber;
@@ -127,11 +119,7 @@ export class U128 {
         if (!this.value.isInteger() || this.value.isNegative()) {
             throw Error(`U128 must be a positive integer but found ${value}`);
         } else if (this.value.toString(16).length > 32) {
-            throw Error(
-                `Given value is out of range for U128: ${this.value.toString(
-                    16
-                )}`
-            );
+            this.value = U128.MAX_VALUE.value;
         }
     }
 
