@@ -6,7 +6,7 @@ import { H160 } from "../value/H160";
 
 import { decode, encode, fromWords, toWords } from "./bech32";
 
-export type AssetTransferAddressValue = AssetTransferAddress | string;
+export type AssetAddressValue = AssetAddress | string;
 
 export type PublicKeyHashValue = H160 | string;
 export type PublicKeyHash = H160;
@@ -28,12 +28,12 @@ export type PayloadValue = PublicKeyHashValue | MultisigValue;
 /**
  * Substitutes for asset owner data which consists of network id,
  * lockScriptHash, parameters. The network id is represented with prefix
- * "cca"(mainnet) or "tca"(testnet). Currently version 0 exists only.
+ * "cca"(mainnet) or "tca"(testnet). Currently version 1 exists only.
  *
- * Refer to the spec for the details about AssetTransferAddress.
+ * Refer to the spec for the details about AssetAddress.
  * https://github.com/CodeChain-io/codechain/blob/master/spec/CodeChain-Address.md
  */
-export class AssetTransferAddress {
+export class AssetAddress {
     public static fromTypeAndPayload(
         type: number,
         payload: PayloadValue,
@@ -42,13 +42,11 @@ export class AssetTransferAddress {
         const { networkId, version = 1 } = options;
 
         if (version !== 1) {
-            throw Error(
-                `Unsupported version for asset transfer address: ${version}`
-            );
+            throw Error(`Unsupported version for asset address: ${version}`);
         }
 
         if (type < 0x00 || type > 0x03) {
-            throw Error(`Unsupported type for asset transfer address: ${type}`);
+            throw Error(`Unsupported type for asset address: ${type}`);
         }
 
         const words = toWords(
@@ -56,14 +54,12 @@ export class AssetTransferAddress {
         );
 
         const address = encode(networkId + "a", words);
-        return new AssetTransferAddress(type, payload, address);
+        return new AssetAddress(type, payload, address);
     }
 
     public static fromString(address: string) {
         if (address.charAt(2) !== "a") {
-            throw Error(
-                `The prefix is unknown for asset transfer address: ${address}`
-            );
+            throw Error(`The prefix is unknown for asset address: ${address}`);
         }
 
         const { words } = decode(address, address.substr(0, 3));
@@ -71,15 +67,13 @@ export class AssetTransferAddress {
         const version = bytes[0];
 
         if (version !== 1) {
-            throw Error(
-                `Unsupported version for asset transfer address: ${version}`
-            );
+            throw Error(`Unsupported version for asset address: ${version}`);
         }
 
         const type = bytes[1];
 
         if (type < 0x00 || type > 0x03) {
-            throw Error(`Unsupported type for asset transfer address: ${type}`);
+            throw Error(`Unsupported type for asset address: ${type}`);
         }
 
         if (type < 0x03) {
@@ -97,15 +91,15 @@ export class AssetTransferAddress {
     }
 
     public static check(address: any) {
-        return address instanceof AssetTransferAddress
+        return address instanceof AssetAddress
             ? true
-            : AssetTransferAddress.checkString(address);
+            : AssetAddress.checkString(address);
     }
 
-    public static ensure(address: AssetTransferAddressValue) {
-        return address instanceof AssetTransferAddress
+    public static ensure(address: AssetAddressValue) {
+        return address instanceof AssetAddress
             ? address
-            : AssetTransferAddress.fromString(address);
+            : AssetAddress.fromString(address);
     }
 
     private static checkString(value: string): boolean {

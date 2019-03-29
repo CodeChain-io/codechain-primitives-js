@@ -1,7 +1,4 @@
-export {
-    AssetTransferAddress,
-    AssetTransferAddressValue
-} from "./address/AssetTransferAddress";
+export { AssetAddress, AssetAddressValue } from "./address/AssetAddress";
 export {
     PlatformAddress,
     PlatformAddressValue
