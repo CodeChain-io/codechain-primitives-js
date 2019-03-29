@@ -14,6 +14,9 @@ const secp256k1 = new EC("secp256k1");
  */
 const HmacDRBG = require("hmac-drbg");
 
+/**
+ * (Experimental)
+ */
 export interface SchnorrSignature {
     r: string;
     s: string;
@@ -31,7 +34,7 @@ function schnorrHash(r: BN, msg: BN): string {
 }
 
 /**
- * Gets Schnorr signature for message from private key.
+ * (Experimental) Gets Schnorr signature for message from private key.
  * @param message 32 byte hexademical string
  * @param priv 32 byte hexadecimal string of private key
  * @returns r, s of Schnorr signature
@@ -99,7 +102,7 @@ export const signSchnorr = (
 };
 
 /**
- * Checks if the signature from signSchnorr is correct.
+ * (Experimental) Checks if the signature from signSchnorr is correct.
  * @param message 32 byte hexademical string
  * @param signature r, s of Schnorr signature
  * @param pub 64 byte hexadecimal string of public key
@@ -149,7 +152,7 @@ export const verifySchnorr = (
 };
 
 /**
- * Gets public key from the message and Schnorr signature.
+ * (Experimental) Gets public key from the message and Schnorr signature.
  * @param message 32 byte hexademical string
  * @param signature r, s of Schnorr signature
  * @returns 64 byte hexadecimal string public key
