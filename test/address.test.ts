@@ -1,32 +1,30 @@
-import { AssetTransferAddress, PlatformAddress } from "..";
-import { Multisig } from "../lib/address/AssetTransferAddress";
+import { AssetAddress, PlatformAddress } from "..";
+import { Multisig } from "../lib/address/AssetAddress";
 
-describe("AssetTransferAddress", () => {
+describe("AssetAddress", () => {
     const validAddressString = "ccaqyqjmvml2hdp8s8xzqnr57r8ywtduy2u6gcq89vffl";
-    const validAddress = AssetTransferAddress.fromString(validAddressString);
+    const validAddress = AssetAddress.fromString(validAddressString);
     // Invalid length
     const invalidAddressString = "ccaqyqjmvml2hdp8s8xzqnr57r8ywtduy2u6gcq89vff";
 
     test("import", () => {
-        expect(typeof AssetTransferAddress).toBe("function");
+        expect(typeof AssetAddress).toBe("function");
     });
 
     test("require", () => {
         const obj = require("..");
-        expect(typeof obj.AssetTransferAddress).toBe("function");
+        expect(typeof obj.AssetAddress).toBe("function");
     });
 
     test("check", () => {
-        expect(AssetTransferAddress.check(validAddressString)).toBe(true);
-        expect(AssetTransferAddress.check(validAddress)).toBe(true);
-        expect(AssetTransferAddress.check(invalidAddressString)).toBe(false);
+        expect(AssetAddress.check(validAddressString)).toBe(true);
+        expect(AssetAddress.check(validAddress)).toBe(true);
+        expect(AssetAddress.check(invalidAddressString)).toBe(false);
     });
 
     test("ensure", () => {
-        expect(AssetTransferAddress.ensure(validAddress)).toBe(validAddress);
-        expect(AssetTransferAddress.ensure(validAddressString)).toEqual(
-            validAddress
-        );
+        expect(AssetAddress.ensure(validAddress)).toBe(validAddress);
+        expect(AssetAddress.ensure(validAddressString)).toEqual(validAddress);
     });
 
     test.each([
@@ -42,14 +40,14 @@ describe("AssetTransferAddress", () => {
         (type, payload, networkId, version, shouldThrow) => {
             if (shouldThrow) {
                 expect(() => {
-                    AssetTransferAddress.fromTypeAndPayload(type, payload, {
+                    AssetAddress.fromTypeAndPayload(type, payload, {
                         networkId,
                         version
                     });
                 }).toThrow();
             } else {
                 expect(() => {
-                    AssetTransferAddress.fromTypeAndPayload(type, payload, {
+                    AssetAddress.fromTypeAndPayload(type, payload, {
                         networkId,
                         version
                     });
@@ -60,7 +58,7 @@ describe("AssetTransferAddress", () => {
 
     test("fromTypeAndPayload multisig", () => {
         expect(
-            AssetTransferAddress.fromTypeAndPayload(
+            AssetAddress.fromTypeAndPayload(
                 3,
                 {
                     m: 1,
@@ -80,7 +78,7 @@ describe("AssetTransferAddress", () => {
     });
 
     test("fromString multisig", () => {
-        const address = AssetTransferAddress.fromString(
+        const address = AssetAddress.fromString(
             "tcaqypsyqg3zyg3zyg3zyg3zyg3zyg3zyg3zyg3zyfzyg3zyg3zyg3zyg3zyg3zyg3zyg3zygsn28hf0"
         );
         const { payload, type } = address;
@@ -97,12 +95,12 @@ describe("AssetTransferAddress", () => {
     });
 
     test("fromString", () => {
-        expect(AssetTransferAddress.fromString(validAddressString)).toEqual(
+        expect(AssetAddress.fromString(validAddressString)).toEqual(
             validAddress
         );
 
         expect(() => {
-            AssetTransferAddress.fromString(
+            AssetAddress.fromString(
                 "cccqyqjmvml2hdp8s8xzqnr57r8ywtduy2u6gcq89vff"
             );
         }).toThrow();
