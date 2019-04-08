@@ -46,4 +46,4 @@ import { blake256, H256 } from "codechain-primitives";
 
 ## API Documentation
 
-Coming soon
+[https://codechain-io.github.io/codechain-primitives-js](https://codechain-io.github.io/codechain-primitives-js)
