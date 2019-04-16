@@ -79,6 +79,10 @@ describe.each([[U64, "U64", 8], [U128, "U128", 16], [U256, "U256", 32]])(
             let a;
             a = new Uxxx(0);
             expect(Uxxx.fromBytes(a.rlpBytes())).toEqual(a);
+            a = new Uxxx(1);
+            expect(Uxxx.fromBytes(a.rlpBytes())).toEqual(a);
+            a = new Uxxx(0x79);
+            expect(Uxxx.fromBytes(a.rlpBytes())).toEqual(a);
             a = new Uxxx(255);
             expect(Uxxx.fromBytes(a.rlpBytes())).toEqual(a);
             a = new Uxxx(1000);

@@ -63,7 +63,11 @@ export class U64 {
 
     public static fromBytes(buffer: Buffer): U64 {
         const bytes = Array.from(buffer.values());
-        const length = bytes.shift()! - 0x80;
+        const first = bytes.shift()!;
+        if (first < 0x80) {
+            return new U64(first);
+        }
+        const length = first! - 0x80;
         if (bytes.length !== length) {
             throw Error(`Invalid RLP for U64: ${bytes}`);
         } else if (length > 8) {
