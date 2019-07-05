@@ -1,13 +1,11 @@
+import { enc, RIPEMD160 } from "crypto-js";
+
 import { toHex } from "./utility";
 
 /**
  * @hidden
  */
 const blake = require("blakejs");
-/**
- * @hidden
- */
-const ripemd = require("ripemd160");
 
 /**
  * Gets data's 256 bit blake hash.
@@ -114,5 +112,5 @@ export const ripemd160 = (data: Buffer | string): string => {
     if (!(data instanceof Buffer)) {
         data = Buffer.from(data, "hex");
     }
-    return new ripemd().update(data).digest("hex");
+    return RIPEMD160(enc.Hex.parse(data.toString("hex"))).toString();
 };
