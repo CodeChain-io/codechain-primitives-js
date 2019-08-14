@@ -25,9 +25,22 @@ export interface SchnorrSignature {
 /**
  * @hidden
  */
-function schnorrHash(r: BN, msg: BN): string {
-    const rString = r.toBuffer("be", 32).toString("binary");
-    const mString = msg.toBuffer("be", 32).toString("binary");
+export function schnorrHash(r: BN, msg: BN): string {
+    // codechain-sdk is now importing a library from bitcore.
+    // But the library monkey patches bn.js so that the method parametrization changes when imported.
+    // toBuffer("be", 32) does not guarantee the buffer length to be 32 if overridden.
+    // In the bitcore library, the correct usage is toBuffer({endian: "big", size: 32}).
+    // So padStart guarantees the rString and mString to have length 32 by not omitting front null bytes.
+    // FIXME when https://github.com/bitpay/bitcore/issues/2190 is resolved.
+
+    const rString = r
+        .toBuffer("be", 32)
+        .toString("binary")
+        .padStart(32, "\x00");
+    const mString = msg
+        .toBuffer("be", 32)
+        .toString("binary")
+        .padStart(32, "\x00");
     const sha256 = md.sha256.create();
     sha256.update(rString).update(mString);
     return sha256.digest().toHex();
