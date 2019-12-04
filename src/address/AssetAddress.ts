@@ -1,5 +1,5 @@
 import { Buffer } from "buffer";
-import * as _ from "lodash";
+import _ from "lodash";
 
 import { toHex } from "../utility";
 import { H160 } from "../value/H160";
