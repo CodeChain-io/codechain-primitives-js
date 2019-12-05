@@ -1,5 +1,5 @@
 import { Buffer } from "buffer";
-import _ from "lodash";
+import * as _ from "lodash";
 
 import { blake160 } from "../hash";
 import { toHex } from "../utility";
