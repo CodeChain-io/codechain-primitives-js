@@ -1,6 +1,9 @@
-import BN = require("bn.js");
 import { md } from "node-forge";
 
+/**
+ * @hidden
+ */
+const BN = require("bn.js");
 /**
  * @hidden
  */
@@ -22,10 +25,7 @@ export interface SchnorrSignature {
     s: string;
 }
 
-/**
- * @hidden
- */
-export function schnorrHash(r: BN, msg: BN): string {
+function schnorrHash(r: any, msg: any): string {
     // codechain-sdk is now importing a library from bitcore.
     // But the library monkey patches bn.js so that the method parametrization changes when imported.
     // toBuffer("be", 32) does not guarantee the buffer length to be 32 if overridden.
