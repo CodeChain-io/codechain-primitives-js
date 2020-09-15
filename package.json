@@ -58,7 +58,7 @@
     "elliptic": "^6.4.1",
     "hmac-drbg": "^1.0.1",
     "lodash": "^4.17.14",
-    "node-forge": "^0.7.6",
+    "node-forge": "^0.10.0",
     "rlp": "^2.1.0"
   }
 }
